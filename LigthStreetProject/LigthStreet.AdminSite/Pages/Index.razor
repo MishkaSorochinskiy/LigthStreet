@@ -1,7 +1,35 @@
 ﻿@page "/"
+@inject IJSRuntime jsruntime
 
-<h1>Hello, world!</h1>
+<form onsubmit="getRouteValues()" class="form-inline mb-2" id="destform">
+    <div class="form-group mr-1">
+        <input type="text" id="origin" class="form-control" placeholder="Origin" required>
+    </div>
+    <div class="form-group mr-1">
+        <input type="text" id="destination" class="form-control" placeholder="Destination" required>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="form-control btn btn-primary">
+    </div>
+</form>
 
-Welcome to your new app.
+<div id="map"></div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code{
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsruntime.InvokeVoidAsync("initMap");
+        }
+
+    }
+}
+<style>
+    #map {
+        width: 100%;
+        height: 80vh;
+        background-color: grey;
+    }
+</style>
