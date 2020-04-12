@@ -1,17 +1,17 @@
 ﻿@page "/"
 @inject IJSRuntime jsruntime
 
-<form onsubmit="getRouteValues()" class="form-inline mb-2" id="destform">
+<div class="d-inline-flex p-2 bd-highlight">
     <div class="form-group mr-1">
-        <input type="text" id="origin" class="form-control" placeholder="Origin" required>
+        <input type="text" id="start" class="form-control" placeholder="Origin" required>
     </div>
     <div class="form-group mr-1">
-        <input type="text" id="destination" class="form-control" placeholder="Destination" required>
+        <input type="text" id="end" class="form-control" placeholder="Destination" required>
     </div>
     <div class="form-group">
-        <input type="submit" class="form-control btn btn-primary">
+        <input type="submit" class="form-control btn btn-primary" onclick="calcRoute()">
     </div>
-</form>
+</div>
 
 <div id="map"></div>
 
