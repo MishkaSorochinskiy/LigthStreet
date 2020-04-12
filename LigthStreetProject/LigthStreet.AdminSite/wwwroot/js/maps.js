@@ -1,19 +1,32 @@
 ﻿var directionsService = null;
 var directionsRenderer = null;
+var clickListenerHandler = null;
 var map = null;
+var directions = [];
+var newmarkers = [];
+var iseditable = false;
+var isadmin = true;
+
 function initMap() {
+    if (isadmin) {
+        document.getElementById("editbtn").style.visibility = "visible";
+    }
+
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer();
-    var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+    var lviv = new google.maps.LatLng(49.84070662559602, 24.026379088646518);
     var mapOptions = {
         zoom: 7,
-        center: chicago
+        center: lviv,
+        
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsRenderer.setMap(map);
 }
 
 function calcRoute() {
+    clearRoutes();
+
     var start = document.getElementById('start').value;
     var end = document.getElementById('end').value;
     var request = {
@@ -24,22 +37,74 @@ function calcRoute() {
     };
     directionsService.route(request, function (result, status) {
         if (status == 'OK') {
-            //directionsRenderer.setDirections(result);
             for (var i = 0, len = result.routes.length; i < len; i++) {
                 var polylineOptionsActual = new google.maps.Polyline({
                     strokeColor: getRandomColor(),
                     strokeOpacity: 1.0,
                     strokeWeight: 6
                 });
-                new google.maps.DirectionsRenderer({
+
+                directions.push(new google.maps.DirectionsRenderer({
                     map: map,
                     directions: result,
                     routeIndex: i,
-                    polylineOptions: polylineOptionsActual              
-                });
+                    polylineOptions: polylineOptionsActual
+                }));
             }
         }
+        else {
+            alert(`request is invalid: ${status}`);
+        }
     });
+}
+
+function clickListener(event) {
+    var latitude = event.latLng.lat();
+    var longitude = event.latLng.lng();
+    var Latlng = { lat: latitude, lng: longitude };
+
+    newmarkers.push(new google.maps.Marker({
+        position: Latlng,
+        map: map
+    }));
+}
+
+function clearRoutes() {
+    for (let i = 0; i < directions.length; ++i) {
+        directions[i].setMap(null);
+    }
+}
+
+function switchEdit() {
+    if (isadmin) {
+        if (iseditable) {
+            iseditable = false;
+            document.getElementById("savebtn").style.visibility = "hidden";
+            clickListenerHandler.remove();
+            for (let i = 0; i < newmarkers.length; ++i) {
+                newmarkers[i].setMap(null);
+            }
+        }
+        else {
+            iseditable = true;
+            document.getElementById("savebtn").style.visibility = "visible";
+            clickListenerHandler = map.addListener("click", clickListener);
+        }
+    }
+}
+
+function saveMarkers() {
+    document.getElementById("savebtn").style.visibility = "hidden";
+
+    //request to server
+
+    switchEdit();
+}
+
+function getMarkers() {
+
+    //request to server
+
 }
 
 function getRandomColor() {

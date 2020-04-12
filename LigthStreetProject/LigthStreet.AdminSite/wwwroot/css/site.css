@@ -181,3 +181,11 @@ app {
         display: block;
     }
 }
+
+#savebtn{
+    visibility:hidden;
+}
+
+#editbtn{
+    visibility:hidden;
+}
