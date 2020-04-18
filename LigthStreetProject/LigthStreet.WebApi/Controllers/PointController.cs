@@ -42,7 +42,7 @@ namespace LigthStreet.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPointAsync([FromBody] AddPoint point)
         {
-            var newEntity = new Point(point.Altitude, point.Latitude);
+            var newEntity = new Point(point.Latitude, point.Longtitude);
             await _unitOfWork.PointRepository.AddAsync(newEntity);
             await _unitOfWork.Commit();
             await _imageService.UploadImageToStorageAsync(newEntity.Id.ToString(), point.Image);

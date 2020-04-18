@@ -8,15 +8,15 @@ namespace Domain.Models
     public class Point: BaseModel
     {
         public Point(double latitude,
-            double altitude)
+            double longtitude)
         {
             Latitude = latitude;
-            Altitude = altitude;
+            Longtitude = longtitude;
         }
         [Required]
         public double Latitude { get; set; }
 
         [Required]  
-        public double Altitude { get; set; }
+        public double Longtitude { get; set; }
     }
 }

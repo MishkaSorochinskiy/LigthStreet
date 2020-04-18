@@ -35,6 +35,8 @@ namespace LigthStreet.WebApi
             services.AddDbContext<LightStreetContext>(options =>
                 options.UseSqlServer(connection));
             #endregion
+            services.AddCors();
+
             services.AddTransient<IImageService, ImageService>();
             services.AddScoped<DbContext, LightStreetContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -51,6 +53,13 @@ namespace LigthStreet.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => builder
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .SetIsOriginAllowed(_ => true)
+               .AllowCredentials()
+           );
 
             app.UseHttpsRedirection();
 

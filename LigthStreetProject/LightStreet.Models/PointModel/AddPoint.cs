@@ -8,7 +8,7 @@ namespace LightStreet.Models.PointModel
     {
         public double Latitude { get; set; }
 
-        public double Altitude { get; set; }
+        public double Longtitude { get; set; }
 
         public string Image { get; set; }
     }
