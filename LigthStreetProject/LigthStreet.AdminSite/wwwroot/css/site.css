@@ -203,3 +203,8 @@ app {
     width:30px;
     height:30px;
 }
+
+.photowindow {
+    width: 100px;
+    height: 100px;
+}

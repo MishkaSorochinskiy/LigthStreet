@@ -4,9 +4,8 @@ var clickListenerHandler = null;
 var map = null;
 
 var directions = [];
-var points = [];
 
-var newpoints = [];
+var points = [];
 var iseditable = false;
 var isadmin = true;
 
@@ -71,9 +70,10 @@ function clickListener(event) {
     });
 
     let newpoint = new Point(marker);
-    newpoint.setInfoWindow(new google.maps.InfoWindow(),map);
+    newpoint.index = points.length;
+    newpoint.setInfoWindow(new google.maps.InfoWindow(), map);
 
-    newpoints.push(newpoint);
+    points.push(newpoint);
 }
 
 function clearRoutes() {
@@ -88,8 +88,8 @@ function switchEdit() {
             iseditable = false;
             document.getElementById("savebtn").style.visibility = "hidden";
             clickListenerHandler.remove();
-            for (let i = 0; i < newpoints.length; ++i) {
-                newpoints[i].circle.setMap(null);
+            for (let i = 0; i < points.length; ++i) {
+                points[i].circle.setMap(null);
             }
         }
         else {
