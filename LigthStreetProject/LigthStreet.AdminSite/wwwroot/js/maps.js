@@ -2,8 +2,11 @@
 var directionsRenderer = null;
 var clickListenerHandler = null;
 var map = null;
+
 var directions = [];
-var newmarkers = [];
+var points = [];
+
+var newpoints = [];
 var iseditable = false;
 var isadmin = true;
 
@@ -16,7 +19,7 @@ function initMap() {
     directionsRenderer = new google.maps.DirectionsRenderer();
     var lviv = new google.maps.LatLng(49.84070662559602, 24.026379088646518);
     var mapOptions = {
-        zoom: 7,
+        zoom: 13,
         center: lviv,
         
     }
@@ -61,12 +64,16 @@ function calcRoute() {
 function clickListener(event) {
     var latitude = event.latLng.lat();
     var longitude = event.latLng.lng();
-    var Latlng = { lat: latitude, lng: longitude };
 
-    newmarkers.push(new google.maps.Marker({
-        position: Latlng,
+    var marker = new google.maps.Marker({
+        position: { lat: latitude, lng: longitude },
         map: map
-    }));
+    });
+
+    let newpoint = new Point(marker);
+    newpoint.setInfoWindow(new google.maps.InfoWindow(),map);
+
+    newpoints.push(newpoint);
 }
 
 function clearRoutes() {
@@ -81,8 +88,8 @@ function switchEdit() {
             iseditable = false;
             document.getElementById("savebtn").style.visibility = "hidden";
             clickListenerHandler.remove();
-            for (let i = 0; i < newmarkers.length; ++i) {
-                newmarkers[i].setMap(null);
+            for (let i = 0; i < newpoints.length; ++i) {
+                newpoints[i].circle.setMap(null);
             }
         }
         else {
