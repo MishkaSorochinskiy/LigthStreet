@@ -14,12 +14,6 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<int> AddPointAsync(Point entity)
-        {
-            var newEntity = await databaseContext.Set<Point>().AddAsync(entity);
-            return newEntity.Entity.Id;
-        }
-
         public bool Exists(int pointId)
         {
             return databaseContext.Set<Point>().Where(x => x.Id == pointId).FirstOrDefault() != null;

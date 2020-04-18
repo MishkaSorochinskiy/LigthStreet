@@ -43,10 +43,10 @@ namespace LigthStreet.WebApi.Controllers
         public async Task<IActionResult> AddPointAsync([FromBody] AddPoint point)
         {
             var newEntity = new Point(point.Altitude, point.Latitude);
-            await _unitOfWork.PointRepository.AddPointAsync(newEntity);
+            await _unitOfWork.PointRepository.AddAsync(newEntity);
             await _unitOfWork.Commit();
             await _imageService.UploadImageToStorageAsync(newEntity.Id.ToString(), point.Image);
-            return Ok();
+            return Ok(newEntity.Id);
         }
     }
 }

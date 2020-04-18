@@ -9,7 +9,6 @@ namespace Domain.Root.Interrfaces
 {
     public interface IPointRepository:IRepository<Point, int>
     {
-        Task<int> AddPointAsync(Point entity);
 
         bool Exists(int pointId);
     }
