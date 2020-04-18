@@ -14,9 +14,9 @@ namespace Infrastructure.Repositories
 
         }
 
-        public bool Exists(int pointId)
+        public async Task<bool> Exists(int pointId)
         {
-            return databaseContext.Set<Point>().Where(x => x.Id == pointId).FirstOrDefault() != null;
+            return await databaseContext.Set<Point>().Where(x => x.Id == pointId).FirstOrDefaultAsync() != null;
         }
     }
 }

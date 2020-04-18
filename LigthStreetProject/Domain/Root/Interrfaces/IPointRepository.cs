@@ -10,7 +10,7 @@ namespace Domain.Root.Interrfaces
     public interface IPointRepository:IRepository<Point, int>
     {
 
-        bool Exists(int pointId);
+        Task<bool> Exists(int pointId);
     }
 }
 
