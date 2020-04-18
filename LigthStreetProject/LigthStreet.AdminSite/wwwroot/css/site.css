@@ -181,3 +181,30 @@ app {
         display: block;
     }
 }
+
+#savebtn{
+    visibility:hidden;
+}
+
+#editbtn{
+    visibility:hidden;
+}
+
+.none{
+    display:none;
+}
+
+.pointphoto{
+    width:80px;
+    height:80px;
+}
+
+.loadlinkimage{
+    width:30px;
+    height:30px;
+}
+
+.photowindow {
+    width: 100px;
+    height: 100px;
+}
