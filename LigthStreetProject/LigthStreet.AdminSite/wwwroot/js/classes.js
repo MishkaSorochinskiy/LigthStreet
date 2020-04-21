@@ -36,7 +36,7 @@ class Point {
         console.log(infoWindow);
         this.infoWindow = infoWindow;
 
-        this.infoWindow.setContent(this.getInfoContent("https://imgstorage123.blob.core.windows.net/partnersfiles1/2.jpg"));
+        this.infoWindow.setContent(this.getInfoContent(`${photourl}camera.png`));
 
         var marker = this.marker;
         this.marker.addListener('click', function () {
