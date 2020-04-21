@@ -1,15 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Domain.AzureConnections;
+using Domain.AzureConnections.Interfaces;
+using Domain.Root;
+using Domain.Root.Interrfaces;
+using Infrastructure;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
+using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LigthStreet.WebApi
 {
@@ -25,7 +27,23 @@ namespace LigthStreet.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Add AzureStorage dependencies
+            services.AddTransient<IAzureStorageConnection, AzureStorageConnection>();
+            #endregion
+            #region Add Entity Framework and Identity Framework 
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<LightStreetContext>(options =>
+                options.UseSqlServer(connection));
+            #endregion
+            services.AddCors();
+
+            services.AddTransient<IImageService, ImageService>();
+            services.AddScoped<DbContext, LightStreetContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPointRepository, PointRepository>();
+
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +53,13 @@ namespace LigthStreet.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => builder
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .SetIsOriginAllowed(_ => true)
+               .AllowCredentials()
+           );
 
             app.UseHttpsRedirection();
 
