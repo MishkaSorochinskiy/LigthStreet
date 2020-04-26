@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Models;
 using Domain.Root;
-using Infrastructure;
 using Infrastructure.Services.Interfaces;
 using LightStreet.Models.PointModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LigthStreet.WebApi.Controllers

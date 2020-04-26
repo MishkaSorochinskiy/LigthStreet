@@ -6,6 +6,7 @@ var map = null;
 var directions = [];
 
 var points = [];
+var newpoints = [];
 var iseditable = false;
 var isadmin = true;
 
@@ -24,6 +25,20 @@ function initMap() {
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsRenderer.setMap(map);
+
+    google.maps.event.addListener(map, 'bounds_changed', function () {
+        let bounds = map.getBounds();
+        $.ajax({
+            url: `${url}Point/points`,
+            data: { west: bounds.Ya.i, east: bounds.Ya.j, north: bounds.Ua.i, south: bounds.Ua.j},
+            success: (responce) => {
+                clearPoints();
+                for (let i = 0; i < responce.length; ++i) {
+                    addPoint(responce[i]);
+                }
+            },
+        });
+    });
 }
 
 function calcRoute() {
@@ -70,16 +85,23 @@ function clickListener(event) {
     });
 
     let newpoint = new Point(marker);
-    newpoint.index = points.length;
+    newpoint.index = newpoints.length;
     newpoint.setInfoWindow(new google.maps.InfoWindow(), map);
 
-    points.push(newpoint);
+    newpoints.push(newpoint);
 }
 
 function clearRoutes() {
     for (let i = 0; i < directions.length; ++i) {
         directions[i].setMap(null);
     }
+}
+
+function clearPoints() {
+    for (let i = 0; i < points.length; ++i) {
+        points[i].marker.setMap(null);
+    }
+    points = [];
 }
 
 function switchEdit() {
@@ -100,20 +122,6 @@ function switchEdit() {
     }
 }
 
-function saveMarkers() {
-    document.getElementById("savebtn").style.visibility = "hidden";
-
-    //request to server
-
-    switchEdit();
-}
-
-function getMarkers() {
-
-    //request to server
-
-}
-
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -121,4 +129,17 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+function addPoint(point) {
+    var marker = new google.maps.Marker({
+        position: { lat: point.latitude, lng: point.longtitude },
+        map: map
+    });
+
+    let newpoint = new Point(marker);
+    newpoint.index = points.length;
+    newpoint.setInfoWindow(new google.maps.InfoWindow(), map);
+    newpoint.setInfoPhoto(point.id)
+    points.push(newpoint);
 }
