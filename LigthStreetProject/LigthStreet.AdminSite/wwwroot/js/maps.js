@@ -2,7 +2,6 @@
 var directionsRenderer = null;
 var clickListenerHandler = null;
 var map = null;
-
 var directions = [];
 
 var points = [];
@@ -20,8 +19,7 @@ function initMap() {
     var lviv = new google.maps.LatLng(49.84070662559602, 24.026379088646518);
     var mapOptions = {
         zoom: 13,
-        center: lviv,
-        
+        center: lviv     
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsRenderer.setMap(map);
@@ -78,7 +76,9 @@ function calcRoute() {
                     routeIndex: i,
                     polylineOptions: polylineOptionsActual
                 }));
-            }
+
+                pointsBelong(result.routes[i].overview_path);
+            }      
         }
         else {
             alert(`request is invalid: ${status}`);
@@ -153,4 +153,19 @@ function addPoint(point) {
     newpoint.setInfoWindow(new google.maps.InfoWindow(), map);
     newpoint.setInfoPhoto(point.id)
     points.push(newpoint);
+}
+
+function pointsBelong(smoothroute) {
+    let polyline = new google.maps.Polyline({
+        path: smoothroute,
+        strokeColor: '#000000',
+        strokeWeight: 10
+    })
+    for (let i = 0; i < points.length; ++i) {
+        let location = new google.maps.LatLng(points[i].latitude, points[i].longtitude);
+        if (google.maps.geometry.poly.isLocationOnEdge(location, polyline,0.01)) {
+            console.log(points[i]);
+            polyline.setMap(map);
+        }
+    }
 }
