@@ -63,6 +63,7 @@ function calcRoute() {
     };
     directionsService.route(request, function (result, status) {
         if (status == 'OK') {
+            let routespoints = [];
             for (var i = 0, len = result.routes.length; i < len; i++) {
                 var polylineOptionsActual = new google.maps.Polyline({
                     strokeColor: getRandomColor(),
@@ -77,8 +78,10 @@ function calcRoute() {
                     polylineOptions: polylineOptionsActual
                 }));
 
-                pointsBelong(result.routes[i].overview_path);
-            }      
+                routespoints=routespoints.concat(pointsBelong(result.routes[i].overview_path));
+            }
+
+            getLightness(routespoints);
         }
         else {
             alert(`request is invalid: ${status}`);
@@ -156,6 +159,7 @@ function addPoint(point) {
 }
 
 function pointsBelong(smoothroute) {
+    let routepoints = [];
     let polyline = new google.maps.Polyline({
         path: smoothroute,
         strokeColor: '#000000',
@@ -163,9 +167,27 @@ function pointsBelong(smoothroute) {
     })
     for (let i = 0; i < points.length; ++i) {
         let location = new google.maps.LatLng(points[i].latitude, points[i].longtitude);
-        if (google.maps.geometry.poly.isLocationOnEdge(location, polyline,0.01)) {
-            console.log(points[i]);
+        if (google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.01)) {
+            routepoints.push(points[i].id);
             polyline.setMap(map);
         }
     }
+
+    return routepoints;
+}
+
+function getLightness(pointsId) {
+    (async () => {
+        const rawResponse = await fetch(`${url}Point/lightness`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pointsId)
+        });
+        const responce = await rawResponse.json();
+
+        console.log(responce);
+    })();
 }
