@@ -60,5 +60,14 @@ namespace LigthStreet.WebApi.Controllers
             
             return Ok(existingPoint.Id);
         }
+
+        [HttpPost]
+        [Route("lightness")]
+        public async Task<IActionResult> GetLightness ([FromBody]List<int> pointsId)
+        {
+            var lightnessData = await _imageHandlerService.Lightness(pointsId);
+
+            return Ok(lightnessData);
+        }
     }
 }
