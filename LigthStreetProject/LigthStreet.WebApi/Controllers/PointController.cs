@@ -28,9 +28,10 @@ namespace LigthStreet.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Point>> GetAllPoints()
+        [Route("points")]
+        public async Task<IEnumerable<Point>> GetAllPoints(double west,double east,double north,double south)
         {
-            return await _unitOfWork.PointRepository.ToListAsync();
+            return await _unitOfWork.PointRepository.GetFromZone(west,east,north,south);
         }
 
         [HttpGet("{pointId}")]
@@ -40,13 +41,23 @@ namespace LigthStreet.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPointAsync([FromBody] AddPoint point)
+        [Route("point")]
+        public async Task<IActionResult> AddPointAsync(AddPoint point)
         {
-            var newEntity = new Point(point.Latitude, point.Longtitude);
-            await _unitOfWork.PointRepository.AddAsync(newEntity);
-            await _unitOfWork.Commit();
-            await _imageService.UploadImageToStorageAsync(newEntity.Id.ToString(), point.Image);
-            return Ok(newEntity.Id);
+            var existingPoint = await _unitOfWork.PointRepository.GetByCoords(point.Latitude, point.Longtitude);
+
+            if (existingPoint == null)
+            {
+                existingPoint = new Point(point.Latitude, point.Longtitude);
+                
+                await _unitOfWork.PointRepository.AddAsync(existingPoint);
+                
+                await _unitOfWork.Commit();
+            }
+
+            await _imageService.UploadImageToStorageAsync(existingPoint.Id.ToString(), point.Image);
+            
+            return Ok(existingPoint.Id);
         }
     }
 }
