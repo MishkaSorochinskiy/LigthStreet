@@ -38,6 +38,7 @@ namespace LigthStreet.WebApi
             services.AddCors();
 
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IImageHandlerService, ImageHandlerService>();
             services.AddScoped<DbContext, LightStreetContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPointRepository, PointRepository>();

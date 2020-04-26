@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Domain.Models;
 using Domain.Root;
 using Infrastructure.Services.Interfaces;
+using LightStreet.Models.ImageModel;
 using LightStreet.Models.PointModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +17,15 @@ namespace LigthStreet.WebApi.Controllers
 
         private readonly IImageService _imageService;
 
+        private readonly IImageHandlerService _imageHandlerService;
+
         public PointController(IUnitOfWork unitOfWork,
-            IImageService imageService)
+            IImageService imageService,
+            IImageHandlerService imageHandlerService)
         {
             _unitOfWork = unitOfWork;
             _imageService = imageService;
+            _imageHandlerService = imageHandlerService;
         }
 
         [HttpGet]
@@ -30,10 +35,10 @@ namespace LigthStreet.WebApi.Controllers
             return await _unitOfWork.PointRepository.GetFromZone(west,east,north,south);
         }
 
-        [HttpGet("{pointId}")]
-        public async Task<string> GetByPointId(int pointId)
+        [HttpGet("lightpoints")]
+        public async Task<IEnumerable<ImageModel>> GetByPointId(List<int> pointIds)
         {
-            return await _imageService.DownloadIMageFromStorageAsync(pointId.ToString());
+            return await _imageHandlerService.Lightness(pointIds);
         }
 
         [HttpPost]
