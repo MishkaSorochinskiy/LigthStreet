@@ -28,13 +28,24 @@ function initMap() {
 
     google.maps.event.addListener(map, 'bounds_changed', function () {
         let bounds = map.getBounds();
+        for (let i = 0; i < points.length; ++i) {
+            if (points[i].latitude >= bounds.Ya.i && points[i].latitude <= bounds.Ya.j)
+            {
+                if (points[i].longitude >= bounds.Ua.i && points[i].longitude <= bounds.Ua.j) {
+                    points[i].marker.setMap(null);
+                    points.splice(i, 1);
+                }
+            }
+        }
         $.ajax({
             url: `${url}Point/points`,
             data: { west: bounds.Ya.i, east: bounds.Ya.j, north: bounds.Ua.i, south: bounds.Ua.j},
             success: (responce) => {
-                clearPoints();
                 for (let i = 0; i < responce.length; ++i) {
-                    addPoint(responce[i]);
+                    let point = points.find(p => { return (p.latitude === responce[i].latitude && p.longtitude === responce[i].longtitude) });
+                    if (point == null) {
+                        addPoint(responce[i]);
+                    }
                 }
             },
         });
