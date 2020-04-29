@@ -3,6 +3,7 @@ const photourl = "https://imgstorage123.blob.core.windows.net/partnersfiles1/";
 
 class Point {
     index;
+    id;
     constructor(marker,photo) {
         this.photo = photo;
         this.marker = marker;
@@ -27,8 +28,9 @@ class Point {
         return content;
     }
 
-    setInfoPhoto(photo) {
-        let photolink = `${photourl}${photo}.jpg`;
+    setInfoPhoto(id) {
+        this.id = id;
+        let photolink = `${photourl}${id}.jpg`;
         this.infoWindow.setContent(this.getInfoContent(photolink));
     }
 
@@ -59,7 +61,7 @@ function loadLinkClicked(index) {
                 res = res.substring(res.indexOf(',')+1);
                 var data = { latitude: point.latitude, longtitude: point.longtitude, image : res };
                 (async () => {
-                    const rawResponse = await fetch(`${url}Point/point`, {
+                    const rawResponse = await fetch(`${url}Point/add`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
