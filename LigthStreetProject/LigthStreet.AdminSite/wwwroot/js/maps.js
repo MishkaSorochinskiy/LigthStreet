@@ -8,6 +8,7 @@ var points = [];
 var newpoints = [];
 var iseditable = false;
 var isadmin = true;
+var coloredpolylines = [];
 
 function initMap() {
     if (isadmin) {
@@ -52,6 +53,7 @@ function initMap() {
 
 function calcRoute() {
     clearRoutes();
+    clearPolylines();
 
     var start = document.getElementById('start').value;
     var end = document.getElementById('end').value;
@@ -64,9 +66,10 @@ function calcRoute() {
     directionsService.route(request, function (result, status) {
         if (status == 'OK') {
             let routespoints = [];
+            let routes = [];
             for (var i = 0, len = result.routes.length; i < len; i++) {
                 var polylineOptionsActual = new google.maps.Polyline({
-                    strokeColor: getRandomColor(),
+                    strokeColor: "#6666ff",
                     strokeOpacity: 1.0,
                     strokeWeight: 6
                 });
@@ -75,13 +78,15 @@ function calcRoute() {
                     map: map,
                     directions: result,
                     routeIndex: i,
+                    zIndex:50,
                     polylineOptions: polylineOptionsActual
                 }));
 
-                routespoints=routespoints.concat(pointsBelong(result.routes[i].overview_path));
+                routespoints = routespoints.concat(pointsBelong(result.routes[i].overview_path));
+                routes.push(result.routes[i].overview_path);
             }
 
-            getLightness(routespoints);
+            getLightness(routespoints,routes);
         }
         else {
             alert(`request is invalid: ${status}`);
@@ -110,6 +115,13 @@ function clearRoutes() {
         directions[i].setMap(null);
     }
 }
+function clearPolylines() {
+    for (let i = 0; i < coloredpolylines.length; ++i) {
+        coloredpolylines[i].poly.setMap(null);
+    }
+
+    coloredpolylines = [];
+}
 
 function clearPoints() {
     for (let i = 0; i < points.length; ++i) {
@@ -136,15 +148,6 @@ function switchEdit() {
     }
 }
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
-
 function addPoint(point) {
     var marker = new google.maps.Marker({
         position: { lat: point.latitude, lng: point.longtitude },
@@ -165,18 +168,18 @@ function pointsBelong(smoothroute) {
         strokeColor: '#000000',
         strokeWeight: 10
     })
+
     for (let i = 0; i < points.length; ++i) {
         let location = new google.maps.LatLng(points[i].latitude, points[i].longtitude);
         if (google.maps.geometry.poly.isLocationOnEdge(location, polyline, 0.01)) {
             routepoints.push(points[i].id);
-            polyline.setMap(map);
         }
     }
 
     return routepoints;
 }
 
-function getLightness(pointsId) {
+function getLightness(pointsId,routes) {
     (async () => {
         const rawResponse = await fetch(`${url}Point/lightness`, {
             method: 'POST',
@@ -188,6 +191,42 @@ function getLightness(pointsId) {
         });
         const responce = await rawResponse.json();
 
-        console.log(responce);
+        showLightRoutes(responce, routes)
     })();
+}
+
+function showLightRoutes(lightpoints, routes) {
+
+    for (let routeIndex = 0; routeIndex < routes.length; ++routeIndex) {
+        for (let subPolyIndex = 0; subPolyIndex < routes[routeIndex].length; subPolyIndex+=1) {
+            for (let pointIndex = 0; pointIndex < lightpoints.length; ++pointIndex) {
+
+                let point = points.find(p => p.id == lightpoints[pointIndex].pointId);
+
+                if (point !== undefined) {
+                    let latLng = new google.maps.LatLng(point.latitude, point.longtitude);
+                    let polyline = new google.maps.Polyline({
+                        path: routes[routeIndex].slice(subPolyIndex, subPolyIndex + 3),
+                        strokeWeight: 9,
+                        zIndex:100
+                    });
+                    if (google.maps.geometry.poly.isLocationOnEdge(latLng, polyline, 0.001)) {
+                        coloredpolylines.push({ isLight: lightpoints[pointIndex].isLight, poly: polyline });                      
+                    }
+                }
+            }
+        }
+    }
+
+    for (let i = 0; i < coloredpolylines.length; ++i) {
+        if (coloredpolylines[i].isLight) {
+            coloredpolylines[i].poly.setOptions({ strokeColor: "#00ff00" });
+        } else {
+            coloredpolylines[i].poly.setOptions({ strokeColor: "#4d4d00"});
+        }
+
+        coloredpolylines[i].poly.setMap(map);
+    }
+
+    console.log(coloredpolylines);
 }

@@ -61,7 +61,7 @@ function loadLinkClicked(index) {
                 res = res.substring(res.indexOf(',')+1);
                 var data = { latitude: point.latitude, longtitude: point.longtitude, image : res };
                 (async () => {
-                    const rawResponse = await fetch(`${url}Point/point`, {
+                    const rawResponse = await fetch(`${url}Point/add`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
