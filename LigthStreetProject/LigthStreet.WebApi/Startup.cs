@@ -47,7 +47,7 @@ namespace LigthStreet.WebApi
             #region Add Entity Framework and Identity Framework 
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<LightStreetContext>(options =>
-                options.UseMySql(connection));
+                options.UseSqlServer(connection));
             #endregion
 
             services.AddCors();

@@ -17,7 +17,7 @@ namespace LigthStreet.WebApi.Identity.IdentityConfigs
         {
             return new List<ApiResource>
             {
-                new ApiResource("IntegratedBiometrics.WebAPI", "Integrated Biometrics WebAPI",
+                new ApiResource("LightStreet.WebApi", "Light Street WebApi",
                     new[] { JwtClaimTypes.Name, JwtClaimTypes.Role, JwtClaimTypes.Id }),
             };
         }

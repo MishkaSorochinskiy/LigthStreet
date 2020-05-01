@@ -2,6 +2,7 @@
 using Infrastructure.Models;
 using Infrastructure.Models.ManyToMany;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
@@ -132,10 +133,15 @@ namespace LigthStreet.WebApi.Data
                 }
             };
             context.Permissions.Add(allowFirmwareInstall);
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Permissions] ON");
+                #endregion Permission
+                context.SaveChanges();
+                context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Permissions] OFF");
 
-            #endregion Permission
-
-            context.SaveChanges();
+                transaction.Commit();
+            }
         }
     }
 }

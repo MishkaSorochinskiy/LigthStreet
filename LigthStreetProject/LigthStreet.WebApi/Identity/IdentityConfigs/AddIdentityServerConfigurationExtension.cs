@@ -42,12 +42,12 @@ namespace LigthStreet.WebApi.Identity.IdentityConfigs
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b =>
-                        b.UseMySql(connectionString,
+                        b.UseSqlServer(connectionString,
                             sql => sql.MigrationsAssembly(migrationsAssembly));
                 }).AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = b =>
-                        b.UseMySql(connectionString,
+                        b.UseSqlServer(connectionString,
                             sql => sql.MigrationsAssembly(migrationsAssembly));
 
                     // this enables automatic token cleanup. this is optional.
