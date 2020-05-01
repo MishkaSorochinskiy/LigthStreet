@@ -1,5 +1,5 @@
-﻿using Domain.Models;
-using Domain.Root.Interrfaces;
+﻿using Infrastructure.Models;
+using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class PointRepository : Repository<Point, int>, IPointRepository
+    public class PointRepository : Repository<PointEntity, int>, IPointRepository
     {
         public PointRepository(DbContext databaseContext)
             : base(databaseContext)
@@ -17,20 +17,20 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> Exists(int pointId)
         {
-            return await databaseContext.Set<Point>().Where(x => x.Id == pointId).FirstOrDefaultAsync() != null;
+            return await databaseContext.Set<PointEntity>().Where(x => x.Id == pointId).FirstOrDefaultAsync() != null;
         }
 
-        public Task<List<Point>> GetFromZone(double west,double east,double north,double south)
+        public Task<List<PointEntity>> GetFromZone(double west,double east,double north,double south)
         {
-            return databaseContext.Set<Point>()
+            return databaseContext.Set<PointEntity>()
                 .Where(p => p.Latitude >= west && p.Latitude <= east)
                 .Where(p => p.Longtitude >= north && p.Longtitude <= south)
                 .ToListAsync();
         }
 
-        public Task<Point> GetByCoords(double lat,double lng)
+        public Task<PointEntity> GetByCoords(double lat,double lng)
         {
-            return databaseContext.Set<Point>()
+            return databaseContext.Set<PointEntity>()
                 .Where(p => p.Latitude == lat && p.Longtitude == lng)
                 .FirstOrDefaultAsync();
         }

@@ -1,10 +1,8 @@
-﻿using Domain.Root.Interrfaces;
+﻿using Infrastructure.Repositories.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Root
+namespace Infrastructure
 {
     public interface IUnitOfWork : IDisposable
     {

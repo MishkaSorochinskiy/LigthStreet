@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Domain.Models;
 using Domain.Root;
+using Infrastructure;
+using Infrastructure.Models;
 using Infrastructure.Services.Interfaces;
 using LightStreet.Models.PointModel;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +27,7 @@ namespace LigthStreet.WebApi.Controllers
 
         [HttpGet]
         [Route("points")]
-        public async Task<IEnumerable<Point>> GetAllPoints(double west,double east,double north,double south)
+        public async Task<IEnumerable<PointEntity>> GetAllPoints(double west,double east,double north,double south)
         {
             return await _unitOfWork.PointRepository.GetFromZone(west,east,north,south);
         }
@@ -44,7 +46,7 @@ namespace LigthStreet.WebApi.Controllers
 
             if (existingPoint == null)
             {
-                existingPoint = new Point(point.Latitude, point.Longtitude);
+                existingPoint = new PointEntity() { Latitude = point.Latitude, Longtitude = point.Longtitude };
                 
                 await _unitOfWork.PointRepository.AddAsync(existingPoint);
                 

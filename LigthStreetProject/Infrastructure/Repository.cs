@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Infrastructure
 {
     public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
-        where TEntity : BaseModel
+        where TEntity : class
         where TKey : struct
     {
         public DbContext databaseContext { get; }

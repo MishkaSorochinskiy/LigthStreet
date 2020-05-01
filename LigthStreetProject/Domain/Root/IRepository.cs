@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Domain.Root
 {
     public interface IRepository<T, Tkey>
-        where T : BaseModel
+        where T : class
         where Tkey : struct
     {
         Task<List<T>> ToListAsync();

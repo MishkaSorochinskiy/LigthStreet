@@ -1,13 +1,15 @@
 using Domain.AzureConnections;
 using Domain.AzureConnections.Interfaces;
-using Domain.Root;
-using Domain.Root.Interrfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Infrastructure.Repositories.Interfaces;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
+using LigthStreet.WebApi.Identity.IdentityConfigs;
+using LigthStreet.WebApi.Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,20 +29,41 @@ namespace LigthStreet.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore()
+                .AddAuthorization(opts =>
+                {
+                    opts.AddPolicy("AllowLogView", policy => { policy.RequireClaim("Permission", "AllowLogView"); });
+                    opts.AddPolicy("AllowAdmin", policy => { policy.RequireClaim("Permission", "AllowAdmin"); });
+                    opts.AddPolicy("AllowUserManagement", policy => { policy.RequireClaim("Permission", "AllowUserManagement"); });
+                    opts.AddPolicy("AllowAgentManagement", policy => { policy.RequireClaim("Permission", "AllowAgentManagement"); });
+                    opts.AddPolicy("AllowAgentInstall", policy => { policy.RequireClaim("Permission", "AllowAgentInstall"); });
+                    opts.AddPolicy("AllowFirmwareInstall", policy => { policy.RequireClaim("Permission", "AllowFirmwareInstall"); });
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+
             #region Add AzureStorage dependencies
             services.AddTransient<IAzureStorageConnection, AzureStorageConnection>();
             #endregion
             #region Add Entity Framework and Identity Framework 
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<LightStreetContext>(options =>
-                options.UseSqlServer(connection));
+                options.UseMySql(connection));
             #endregion
-            services.AddCors();
 
+            services.AddCors();
+           
             services.AddTransient<IImageService, ImageService>();
             services.AddScoped<DbContext, LightStreetContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPointRepository, PointRepository>();
+
+            services.AddIdentityConfiguration();
+
+            services.AddIdentityServerThirdPartyValidationConfiguration();
+
+            services.AddIdentityServerConfiguration(connection);
+            services.InitializeDatabaseForIdentitySever();
+            //services.AddTransient<IClientService, ClientService>();
 
             services.AddControllers();
 
@@ -61,16 +84,18 @@ namespace LigthStreet.WebApi
                .AllowCredentials()
            );
 
+            app.UseIdentityServer();
+
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
