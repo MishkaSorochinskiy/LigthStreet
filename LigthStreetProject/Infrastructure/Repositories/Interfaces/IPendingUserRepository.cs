@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Enums;
+using Domain.Models;
 using Domain.Root;
 using Infrastructure.Models;
 using System;
@@ -17,5 +18,7 @@ namespace Infrastructure.Repositories.Interfaces
         Task<bool> UsernameExists(string username);
 
         Task<bool> EmailExists(string email);
+
+        Task<User> ApproveUserAndSetTagsAsync(PendingUser pendingUser, UserStatusType userStatusType, List<string> tags, int currentUserId);
     }
 }

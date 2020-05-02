@@ -17,7 +17,11 @@ namespace Infrastructure
 
         private readonly IMapper _mapper;
 
-        private readonly UserManager<PendingUserEntity> _userManager;
+        private IUserRepository userRepository;
+
+        private readonly UserManager<PendingUserEntity> _pendingUserManager;
+
+        private readonly UserManager<UserRepository> _userManager;
 
         public IPointRepository PointRepository
         {
@@ -31,24 +35,38 @@ namespace Infrastructure
             }
         }
 
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                if (pointRepository == null)
+                {
+                    pointRepository = new UserRepository(DatabaseContext, _mapper, _userManager);
+                }
+                return userRepository;
+            }
+        }
+
         public IPendingUserRepository PendingUserRepository
         {
             get
             {
                 if (pendingUserRepository == null)
                 {
-                    pendingUserRepository = new PendingUserRepository(DatabaseContext, _mapper, _userManager);
+                    pendingUserRepository = new PendingUserRepository(DatabaseContext, _mapper, _pendingUserManager, userRepository);
                 }
                 return pendingUserRepository;
             }
         }
         public DbContext DatabaseContext { get; private set; }
 
-        public UnitOfWork(DbContext dbContext, IMapper mapper, UserManager<PendingUserEntity> userManager)
+        public UnitOfWork(DbContext dbContext, IMapper mapper, 
+            UserManager<PendingUserEntity> pendingUserManager,
+            UserManager<UserEntity> userManager)
         {
             DatabaseContext = dbContext;
             _mapper = mapper;
-            _userManager = userManager;
+            _pendingUserManager = pendingUserManager;
         }
 
         public Task Commit()
