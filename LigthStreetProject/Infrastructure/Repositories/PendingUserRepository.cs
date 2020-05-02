@@ -34,11 +34,13 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<PendingUser>> GetPagesAsync(int count, int page, string searchQuery)
         {
-            var query = databaseContext.Set<PendingUserEntity>().Where(x=>x.UserName.ToUpper().Contains(searchQuery.ToUpper()) 
-            || x.LastName.ToUpper().Contains(searchQuery.ToUpper()) || x.FirstName.ToUpper().Contains(searchQuery.ToUpper()));
-
-            query = query.Skip(page*count).Take(count);
-
+            var query = databaseContext.Set<PendingUserEntity>().AsQueryable();
+            if (searchQuery != null)
+            {
+                query = query.Where(x => x.UserName.ToUpper().Contains(searchQuery.ToUpper())
+                || x.LastName.ToUpper().Contains(searchQuery.ToUpper()) || x.FirstName.ToUpper().Contains(searchQuery.ToUpper()));
+            }
+            query = query.Skip(page * count).Take(count);
             return _mapper.Map<List<PendingUser>>(await query.ToListAsync());
 
         }
