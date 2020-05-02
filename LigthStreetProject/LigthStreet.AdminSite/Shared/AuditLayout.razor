@@ -1,0 +1,57 @@
+﻿@inherits LayoutComponentBase
+@using System.Security.Claims;
+
+<div class="sidebar">
+    <NavMenu />
+</div>
+
+<div class="main">
+    <nav class="navbar navbar-expand-sm bg-light">
+        <ul class="navbar-nav">
+            <li class="nav-item px-3">
+                <h6>Welcome @Username</h6>
+                <NavLink class="nav-link" id="logout" href="/logout">
+                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                </NavLink>
+            </li>
+        </ul>
+    </nav>
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@code{
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+    private string Username;
+    protected async override Task OnInitializedAsync()
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+        Username = user.Identity.Name;
+    }
+
+}
+<style>
+    .navbar ul {
+        display: inline-block;
+        width: 100%;
+    }
+
+        .navbar ul > li {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+            .navbar ul > li:last-child {
+                display: flex;
+                float: right;
+            }
+
+                .navbar ul > li:last-child h6 {
+                    margin-top: 14px;
+                    margin-right: 7px;
+                    color: cornflowerblue;
+                    font-weight:bold;
+                }
+</style>

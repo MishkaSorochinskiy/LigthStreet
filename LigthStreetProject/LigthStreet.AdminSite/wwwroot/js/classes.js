@@ -1,4 +1,4 @@
-﻿const url = "https://localhost:44360/api/"; 
+﻿const url = "https://localhost:5001/api/"; 
 const photourl = "https://imgstorage123.blob.core.windows.net/partnersfiles1/";
 
 class Point {

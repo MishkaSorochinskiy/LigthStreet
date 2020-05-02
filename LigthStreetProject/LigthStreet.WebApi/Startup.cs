@@ -6,7 +6,6 @@ using Infrastructure.Repositories.Interfaces;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
 using LigthStreet.WebApi.Identity.IdentityConfigs;
-using LigthStreet.WebApi.Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace LigthStreet.WebApi
 {
@@ -50,12 +50,19 @@ namespace LigthStreet.WebApi
                 options.UseSqlServer(connection));
             #endregion
 
+            services.AddControllers()
+               .AddNewtonsoftJson(options =>
+               {
+                   options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+               });
+
             services.AddCors();
            
             services.AddTransient<IImageService, ImageService>();
             services.AddScoped<DbContext, LightStreetContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPointRepository, PointRepository>();
+            services.AddScoped<IPendingUserRepository, PendingUserRepository>();
 
             services.AddIdentityConfiguration();
 

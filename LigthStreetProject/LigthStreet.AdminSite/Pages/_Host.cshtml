@@ -14,6 +14,7 @@
     <base href="~/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
 </head>
 <body>
     <app>
@@ -38,5 +39,53 @@
     </script>
     <script src="~/js/classes.js"></script>
     <script src="~/js/maps.js"></script>
+    <script>
+        function showPassword() {
+            if (document.getElementById("eyePassword").style.color !== "lawngreen") {
+                document.getElementById("eyePassword").style.color = "lawngreen";
+                document.getElementById("PasswordUser").type = "text";
+            }
+            else {
+                document.getElementById("eyePassword").style.color = "black";
+                document.getElementById("PasswordUser").type = "password";
+            }
+        }
+
+        function successAlert(message) {
+            $('.alert-success').show();
+            document.getElementsByClassName("alert-success")[0].innerText = message;
+            setTimeout(function () { $('.alert-success').slideUp(1000); }, 2000);
+        }
+
+        function dangerAlert(message) {
+            $('.alert-danger').show();
+            document.getElementsByClassName("alert-danger")[0].innerText = message;
+            setTimeout(function () { $('.alert-danger').slideUp(1000); }, 2000);
+        }
+
+        function warningAlert(message) {
+            $('.alert-warning').show();
+            document.getElementsByClassName("alert-warning")[0].innerText = message;
+            setTimeout(function () { $('.alert-warning').slideUp(1000); }, 3000);
+        }
+
+        function registerAlert(message) {
+            $('.alert-danger').css("display", "block");
+            var textnode = document.createTextNode(message);
+            document.getElementById('alert').appendChild(textnode)
+        }
+
+        function closeAlert() {
+            $('.alert-danger').css("display", "none");
+        }
+
+        function disableRegister() {
+            document.getElementById("register-btn").setAttribute("disabled", "disabled");
+        }
+
+        function enableRegister() {
+            document.getElementById("register-btn").removeAttribute("disabled");
+        }
+    </script>
 </body>
 </html>

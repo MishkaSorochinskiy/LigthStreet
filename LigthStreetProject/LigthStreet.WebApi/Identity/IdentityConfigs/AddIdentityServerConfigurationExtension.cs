@@ -52,7 +52,7 @@ namespace LigthStreet.WebApi.Identity.IdentityConfigs
 
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
-                });//.AddProfileService<ProfileService>();
+                }).AddProfileService<ProfileService>();
         }
 
         /// <summary>

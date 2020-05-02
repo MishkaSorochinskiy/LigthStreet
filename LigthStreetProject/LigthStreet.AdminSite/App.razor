@@ -1,11 +1,19 @@
-﻿
+﻿@using LigthStreet.AdminSite.Pages.LoginPages
+
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <Login />
+            </NotAuthorized>
+            <Authorizing>
+                <p>Just checking with the boss you can come in.</p>
+            </Authorizing>
+        </AuthorizeRouteView>
     </Found>
     <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p>Sorry, there's nothing at this address.</p>
-        </LayoutView>
+        <CascadingAuthenticationState>
+            <PageNotFound />
+        </CascadingAuthenticationState>
     </NotFound>
 </Router>

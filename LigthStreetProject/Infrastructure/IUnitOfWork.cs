@@ -6,6 +6,7 @@ namespace Infrastructure
 {
     public interface IUnitOfWork : IDisposable
     {
+        IPendingUserRepository PendingUserRepository { get; }
         IPointRepository PointRepository { get; }
         Task Commit();
     }
