@@ -182,15 +182,6 @@ app {
         display: block;
     }
 }
-
-#savebtn{
-    visibility:hidden;
-}
-
-#editbtn{
-    visibility:hidden;
-}
-
 .none{
     display:none;
 }
@@ -208,4 +199,13 @@ app {
 .photowindow {
     width: 100px;
     height: 100px;
+}
+
+#leftdemophoto{
+    cursor:pointer;
+}
+
+.demoImg{
+    width:380px;
+    height:330px;
 }

@@ -1,6 +1,9 @@
 ﻿@page "/demo"
 
 <div class="row m-0 p-0">
+    <div class="col-3">
+
+    </div>
     <div class="col-sm m-0 p-0 d-inline-flex">
         <div class="w-25">
             <select class="browser-default custom-select" id="selectValue">
@@ -8,21 +11,26 @@
                 <option value="1">Light</option>
             </select>
         </div>
-        <div class="w-25 ml-2">
+        <div class="w-25 ml-4">
             <p id="sliderLabel" class="text-left m-0 p-0">50%</p>
             <input type="range" class="custom-range" min="0" max="100" step="1" id="sliderValue" oninput="updateLabel(this.value)">
         </div>
-        <div class="ml-2">
-             <button class="btn btn-outline-primary">Start</button>
+        <div class="ml-4">
+             <button class="btn btn-outline-primary" onclick="calcPhoto()">Start</button>
         </div>
     </div>
 </div>
 
-<div class="row m-0 p-0">
-    <div class="col-sm">
-        <img width="300" height="300" src="https://imgstorage123.blob.core.windows.net/partnersfiles1/interface.png"/>
+<div class="row m-0 p-0 mt-5">
+    <div class="col-1">
+
     </div>
-    <div class="col-sm ml-2">
-        <img width="300" height="300" src="https://imgstorage123.blob.core.windows.net/partnersfiles1/interface.png"/>
+    <div id="leftdemophoto" class="col-5 m-0 p-0 imgdiv text-center" onclick="document.getElementById('demophotoload').click();">
+        <img id="photoToDemo" class="demoImg m-0 p-0 p-1" src="https://imgstorage123.blob.core.windows.net/partnersfiles1/interface.png"/>
+    </div>
+    <div class="col-5 m-0 p-0 ml-3 imgdiv text-center">
+        <img id="calculatedPhoto" class="demoImg m-0 p-0 p-1"  src="https://imgstorage123.blob.core.windows.net/partnersfiles1/interface.png"/>
     </div>
 </div>
+
+<input id="demophotoload" onchange="demoPhotoSelected(event)" class="none" type="file" accept=".jpeg,.jpg,.png"/>

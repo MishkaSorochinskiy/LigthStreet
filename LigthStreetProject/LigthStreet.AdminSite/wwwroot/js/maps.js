@@ -110,21 +110,19 @@ function clearPoints() {
 }
 
 function switchEdit() {
-    if (isadmin) {
         if (iseditable) {
             iseditable = false;
-            document.getElementById("savebtn").style.visibility = "hidden";
             clickListenerHandler.remove();
-            for (let i = 0; i < points.length; ++i) {
-                points[i].circle.setMap(null);
+            for (let i = 0; i < newpoints.length; ++i) {
+                newpoints[i].marker.setMap(null);
             }
+
+            newpoints = [];
         }
         else {
             iseditable = true;
-            document.getElementById("savebtn").style.visibility = "visible";
             clickListenerHandler = map.addListener("click", clickListener);
         }
-    }
 }
 
 function addPoint(point) {
