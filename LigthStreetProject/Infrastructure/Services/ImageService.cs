@@ -75,7 +75,7 @@ namespace Infrastructure.Services
             {
                 StringBuilder fileName = new StringBuilder(pointId);
                 fileName.Append(SignatureConstants.JPG);
-
+              
                 byte[] fileData = Convert.FromBase64String(image);
                 if (fileName != null && fileData != null)
                 {
