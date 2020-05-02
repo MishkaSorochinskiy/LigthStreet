@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject NavigationManager NavigationManager
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">LigthStreet.AdminSite</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -12,6 +14,11 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="users" Match="NavLinkMatch.Prefix" @onclick="NavigateToUserPending">
+                <span class="oi oi-people" aria-hidden="true"></span> People
+            </NavLink>
+        </li>
     </ul>
 </div>
 
@@ -23,5 +30,10 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void NavigateToUserPending()
+    {
+        NavigationManager.NavigateTo("/users/pending");
     }
 }

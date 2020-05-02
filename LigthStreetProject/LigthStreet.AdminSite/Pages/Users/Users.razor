@@ -1,0 +1,87 @@
+﻿@page "/users"
+@layout UserLayout
+
+@inject IJSRuntime JSRuntime
+
+<div>
+    <table class="table table-striped table-responsive-md" id="Pending" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>
+                    Email
+                </th>
+                <th>
+                    RequestedAt
+                </th>
+                <th>
+                    FirstName
+                </th>
+                <th>
+                    LastName
+                </th>
+                <th>
+                    Tag
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeAsync<object>("pendingUsers.bindDatatable");
+        }
+    }
+
+}
+
+
+<style>
+
+    .chip {
+        position: relative;
+        background-color: rgba(134, 136, 140, 0.4);
+        margin: 1em 1em 0 0;
+        display: inline-block;
+        width: 40px;
+        height: 16px;
+        padding: 0px 4px;
+        line-height: 20px;
+        border-radius: 3px;
+        font-size: 7px;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 12ch;
+        text-overflow: ellipsis;
+    }
+
+        .chip:hover {
+            background-color: rgba(134, 136, 140, 0.7);
+        }
+
+    .closebtn {
+        padding-left: 15px;
+        color: #888;
+        font-weight: bold;
+        float: right;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+        .closebtn:hover {
+            color: #000;
+        }
+
+        .closebtn:hover {
+            color: #000;
+        }
+</style>
