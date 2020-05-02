@@ -51,7 +51,7 @@ namespace LigthStreet.WebApi.Controllers
             if (pendingUser != null)
             {
                 var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-                int currentUserId = 0;
+                int currentUserId = 1;
                 if (claim != null)
                 {
                    currentUserId = int.Parse(claim.Value);

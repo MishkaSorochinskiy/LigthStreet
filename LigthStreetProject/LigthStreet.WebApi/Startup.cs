@@ -76,6 +76,7 @@ namespace LigthStreet.WebApi
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPointRepository, PointRepository>();
             services.AddScoped<IPendingUserRepository, PendingUserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddIdentityConfiguration();
 

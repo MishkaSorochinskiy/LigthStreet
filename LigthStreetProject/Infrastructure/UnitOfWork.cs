@@ -21,7 +21,9 @@ namespace Infrastructure
 
         private readonly UserManager<PendingUserEntity> _pendingUserManager;
 
-        private readonly UserManager<UserRepository> _userManager;
+        private readonly UserManager<UserEntity> _userManager;
+
+        private readonly IUserRepository _userRepository;
 
         public IPointRepository PointRepository
         {
@@ -39,9 +41,9 @@ namespace Infrastructure
         {
             get
             {
-                if (pointRepository == null)
+                if (userRepository == null)
                 {
-                    pointRepository = new UserRepository(DatabaseContext, _mapper, _userManager);
+                    userRepository = new UserRepository(DatabaseContext, _mapper, _userManager);
                 }
                 return userRepository;
             }
@@ -53,7 +55,7 @@ namespace Infrastructure
             {
                 if (pendingUserRepository == null)
                 {
-                    pendingUserRepository = new PendingUserRepository(DatabaseContext, _mapper, _pendingUserManager, userRepository);
+                    pendingUserRepository = new PendingUserRepository(DatabaseContext, _mapper, _pendingUserManager, _userRepository);
                 }
                 return pendingUserRepository;
             }
@@ -62,11 +64,14 @@ namespace Infrastructure
 
         public UnitOfWork(DbContext dbContext, IMapper mapper, 
             UserManager<PendingUserEntity> pendingUserManager,
-            UserManager<UserEntity> userManager)
+            UserManager<UserEntity> userManager,
+            IUserRepository userRepository)
         {
             DatabaseContext = dbContext;
             _mapper = mapper;
             _pendingUserManager = pendingUserManager;
+            _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         public Task Commit()

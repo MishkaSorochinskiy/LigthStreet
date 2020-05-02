@@ -64,8 +64,8 @@ namespace Infrastructure.Repositories
 
         private async Task DeleteAsync(User user)
         {
-            var userForDelete = await databaseContext.Set<PendingUser>().Where(x=>x.Id == user.Id).SingleOrDefaultAsync();
-            databaseContext.Set<PendingUser>().Remove(userForDelete);
+            var userForDelete = await databaseContext.Set<PendingUserEntity>().Where(x=>x.UserName == user.UserName).SingleOrDefaultAsync();
+            databaseContext.Set<PendingUserEntity>().Remove(userForDelete);
             await databaseContext.SaveChangesAsync();
         }
 
