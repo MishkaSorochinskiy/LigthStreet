@@ -47,7 +47,8 @@ app {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background: rgb(15,179,212);
+    background: linear-gradient(180deg, rgba(15,179,212,1) 0%, rgba(13,166,148,1) 72%, rgba(14,6,145,1) 100%);
 }
 
     .sidebar .top-row {
@@ -181,15 +182,6 @@ app {
         display: block;
     }
 }
-
-#savebtn{
-    visibility:hidden;
-}
-
-#editbtn{
-    visibility:hidden;
-}
-
 .none{
     display:none;
 }
@@ -207,4 +199,13 @@ app {
 .photowindow {
     width: 100px;
     height: 100px;
+}
+
+#leftdemophoto{
+    cursor:pointer;
+}
+
+.demoImg{
+    width:380px;
+    height:330px;
 }

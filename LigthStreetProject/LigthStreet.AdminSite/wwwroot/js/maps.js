@@ -11,10 +11,6 @@ var isadmin = true;
 var coloredpolylines = [];
 
 function initMap() {
-    if (isadmin) {
-        document.getElementById("editbtn").style.visibility = "visible";
-    }
-
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer();
     var lviv = new google.maps.LatLng(49.84070662559602, 24.026379088646518);
@@ -25,29 +21,12 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsRenderer.setMap(map);
 
-    google.maps.event.addListener(map, 'bounds_changed', function () {
-        let bounds = map.getBounds();
-        for (let i = 0; i < points.length; ++i) {
-            if (points[i].latitude >= bounds.Ya.i && points[i].latitude <= bounds.Ya.j)
-            {
-                if (points[i].longitude >= bounds.Ua.i && points[i].longitude <= bounds.Ua.j) {
-                    points[i].marker.setMap(null);
-                    points.splice(i, 1);
-                }
-            }
-        }
-        $.ajax({
-            url: `${url}Point/points`,
-            data: { west: bounds.Ya.i, east: bounds.Ya.j, north: bounds.Ua.i, south: bounds.Ua.j},
-            success: (responce) => {
-                for (let i = 0; i < responce.length; ++i) {
-                    let point = points.find(p => { return (p.latitude === responce[i].latitude && p.longtitude === responce[i].longtitude) });
-                    if (point == null) {
-                        addPoint(responce[i]);
-                    }
-                }
-            },
-        });
+    google.maps.event.addListener(map, 'bounds_changed', bounds_changed);
+
+    google.maps.event.addListenerOnce(map, 'idle', function ()
+    {
+        clearPoints();
+        bounds_changed();
     });
 }
 
@@ -131,21 +110,19 @@ function clearPoints() {
 }
 
 function switchEdit() {
-    if (isadmin) {
         if (iseditable) {
             iseditable = false;
-            document.getElementById("savebtn").style.visibility = "hidden";
             clickListenerHandler.remove();
-            for (let i = 0; i < points.length; ++i) {
-                points[i].circle.setMap(null);
+            for (let i = 0; i < newpoints.length; ++i) {
+                newpoints[i].marker.setMap(null);
             }
+
+            newpoints = [];
         }
         else {
             iseditable = true;
-            document.getElementById("savebtn").style.visibility = "visible";
             clickListenerHandler = map.addListener("click", clickListener);
         }
-    }
 }
 
 function addPoint(point) {
@@ -227,6 +204,28 @@ function showLightRoutes(lightpoints, routes) {
 
         coloredpolylines[i].poly.setMap(map);
     }
+}
 
-    console.log(coloredpolylines);
+function bounds_changed() {
+    let bounds = map.getBounds();
+    for (let i = 0; i < points.length; ++i) {
+        if (points[i].latitude >= bounds.Ya.i && points[i].latitude <= bounds.Ya.j) {
+            if (points[i].longitude >= bounds.Ua.i && points[i].longitude <= bounds.Ua.j) {
+                points[i].marker.setMap(null);
+                points.splice(i, 1);
+            }
+        }
+    }
+    $.ajax({
+        url: `${url}Point/points`,
+        data: { west: bounds.Ya.i, east: bounds.Ya.j, north: bounds.Ua.i, south: bounds.Ua.j },
+        success: (responce) => {
+            for (let i = 0; i < responce.length; ++i) {
+                let point = points.find(p => { return (p.latitude === responce[i].latitude && p.longtitude === responce[i].longtitude) });
+                if (point == null) {
+                    addPoint(responce[i]);
+                }
+            }
+        },
+    });
 }
