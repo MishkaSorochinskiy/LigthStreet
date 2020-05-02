@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LigthStreet.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users/authorize")]
     [ApiController]
     public class AuthorizeUserController : ControllerBase
     {

@@ -36,7 +36,7 @@ namespace Infrastructure.Repositories
         {
             var entityUser = _mapper.Map<PendingUserEntity>(pendingUser);
             var result = await _userManager.CreateAsync(entityUser, password);
-            return _mapper.Map<PendingUser>(result);
+            return _mapper.Map<PendingUser>(entityUser);
         }
 
         public async Task<bool> UsernameExists(string username)

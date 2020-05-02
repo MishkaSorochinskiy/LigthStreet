@@ -1,3 +1,5 @@
+using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using Domain.AzureConnections;
 using Domain.AzureConnections.Interfaces;
 using Infrastructure;
@@ -5,6 +7,7 @@ using Infrastructure.Repositories;
 using Infrastructure.Repositories.Interfaces;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
+using LightStreet.Mappers;
 using LigthStreet.WebApi.Identity.IdentityConfigs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,7 +60,17 @@ namespace LigthStreet.WebApi
                });
 
             services.AddCors();
-           
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ServicesMapperProfile());
+                mc.AddProfile(new WebApiMapperProfile());
+                mc.AddExpressionMapping();
+                mc.AllowNullCollections = true;
+            });
+
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddTransient<IImageService, ImageService>();
             services.AddScoped<DbContext, LightStreetContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
