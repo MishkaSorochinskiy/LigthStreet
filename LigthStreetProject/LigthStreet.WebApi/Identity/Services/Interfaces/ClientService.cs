@@ -29,7 +29,7 @@ namespace LigthStreet.WebApi.Identity.Services.Interfaces
                 {
                     new Secret(password.Sha256())
                 },
-                AllowedScopes = { "IntegratedBiometrics.WebAPI" }
+                AllowedScopes = { "LightStreet.WebAPI" }
             };
             _configurationDbContext.Clients.Add(client.ToEntity());
             await _configurationDbContext.SaveChangesAsync();

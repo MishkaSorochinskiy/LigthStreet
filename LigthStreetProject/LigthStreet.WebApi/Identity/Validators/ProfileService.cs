@@ -1,7 +1,9 @@
-﻿using IdentityServer4.Extensions;
+﻿using Domain.Enums;
+using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Infrastructure.Models;
+using Infrastructure.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
@@ -50,6 +52,8 @@ namespace LigthStreet.WebApi.Identity.Validators
             {
                 var user = await _userManager.FindByIdAsync(sub);
                 context.IsActive = user != null;
+                context.IsActive = !user.IsDeleted;
+                context.IsActive = user.Status == UserStatusTypeEntity.Active;
             }
         }
     }
