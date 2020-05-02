@@ -66,15 +66,7 @@ namespace LigthStreet.WebApi.Controllers
         [Route("lightness")]
         public async Task<IActionResult> GetLightness ([FromBody]List<int> pointsId)
         {
-            var from = DateTime.Now;
-
             var lightnessData = await _imageHandlerService.Lightness(pointsId);
-
-            var to = DateTime.Now;
-
-            var dif = to.Subtract(from);
-
-            var sec = dif.TotalMilliseconds;
 
             return Ok(lightnessData);
         }
