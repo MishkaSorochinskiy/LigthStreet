@@ -25,7 +25,7 @@
         "Key": "Value",
         "JWTAuthority": "https://localhost:5001",
         "HardPassword": "ShouldBeSomeLongPassword",
-        "LightStreetDBConnection": "Server=DESKTOP-7I4K4O1;Trusted_Connection=True;",
+        "LightStreetDBConnection": "Server=MISHKACOMP;Trusted_Connection=True;",
         "DatabaseName": "LightStreetContext",
         "JWTAudience": "LightStreet.WebApi",
         "ASPNETCORE_ENVIRONMENT": "Development"
