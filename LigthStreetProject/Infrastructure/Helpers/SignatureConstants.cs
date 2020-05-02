@@ -6,6 +6,6 @@ namespace Infrastructure.Helpers
     {
         public static StringBuilder JPG = new StringBuilder(".jpg");
         public static string CONTAINER_NAME = "partnersfiles1";
-        public static long IMAGE_BYTE_LENGTH = 100000;
+        public static long IMAGE_BYTE_LENGTH = 1000000;
     }
 }

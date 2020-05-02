@@ -52,7 +52,7 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<string> DownloadIMageFromStorageAsync(string pointId)
+        public async Task<byte[]> DownloadIMageFromStorageAsync(string pointId)
         {
             try
             {
@@ -62,8 +62,7 @@ namespace Infrastructure.Services
 
                 byte[] array = new byte[SignatureConstants.IMAGE_BYTE_LENGTH];
                 await cloudBlockBlob.DownloadToByteArrayAsync(array, 0);
-                string image = Convert.ToBase64String(array);
-                return image;
+                return array;
             }
             catch (Exception ex)
             {
