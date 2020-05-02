@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infrastructure;
 using Infrastructure.Models;
 using Infrastructure.Services.Interfaces;
+using LightStreet.WebApi.Models.ImageModel;
 using LightStreet.WebApi.Models.Point;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +18,15 @@ namespace LigthStreet.WebApi.Controllers
 
         private readonly IImageService _imageService;
 
+        private readonly IImageHandlerService _imageHandlerService;
+
         public PointController(IUnitOfWork unitOfWork,
-            IImageService imageService)
+            IImageService imageService,
+            IImageHandlerService imageHandlerService)
         {
             _unitOfWork = unitOfWork;
             _imageService = imageService;
+            _imageHandlerService = imageHandlerService;
         }
 
         [HttpGet]
@@ -30,14 +36,14 @@ namespace LigthStreet.WebApi.Controllers
             return await _unitOfWork.PointRepository.GetFromZone(west,east,north,south);
         }
 
-        [HttpGet("{pointId}")]
-        public async Task<string> GetByPointId(int pointId)
+        [HttpGet("lightpoints")]
+        public async Task<IEnumerable<ImageModel>> GetByPointId(List<int> pointIds)
         {
-            return await _imageService.DownloadIMageFromStorageAsync(pointId.ToString());
+            return await _imageHandlerService.Lightness(pointIds);
         }
 
         [HttpPost]
-        [Route("point")]
+        [Route("add")]
         public async Task<IActionResult> AddPointAsync(AddPoint point)
         {
             var existingPoint = await _unitOfWork.PointRepository.GetByCoords(point.Latitude, point.Longtitude);
@@ -54,6 +60,15 @@ namespace LigthStreet.WebApi.Controllers
             await _imageService.UploadImageToStorageAsync(existingPoint.Id.ToString(), point.Image);
             
             return Ok(existingPoint.Id);
+        }
+
+        [HttpPost]
+        [Route("lightness")]
+        public async Task<IActionResult> GetLightness ([FromBody]List<int> pointsId)
+        {
+            var lightnessData = await _imageHandlerService.Lightness(pointsId);
+
+            return Ok(lightnessData);
         }
     }
 }

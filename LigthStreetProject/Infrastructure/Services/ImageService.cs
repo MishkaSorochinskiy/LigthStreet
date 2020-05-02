@@ -4,7 +4,6 @@ using Infrastructure.Services.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,7 +51,7 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<string> DownloadIMageFromStorageAsync(string pointId)
+        public async Task<byte[]> DownloadIMageFromStorageAsync(string pointId)
         {
             try
             {
@@ -62,8 +61,7 @@ namespace Infrastructure.Services
 
                 byte[] array = new byte[SignatureConstants.IMAGE_BYTE_LENGTH];
                 await cloudBlockBlob.DownloadToByteArrayAsync(array, 0);
-                string image = Convert.ToBase64String(array);
-                return image;
+                return array;
             }
             catch (Exception ex)
             {
@@ -77,7 +75,7 @@ namespace Infrastructure.Services
             {
                 StringBuilder fileName = new StringBuilder(pointId);
                 fileName.Append(SignatureConstants.JPG);
-
+              
                 byte[] fileData = Convert.FromBase64String(image);
                 if (fileName != null && fileData != null)
                 {

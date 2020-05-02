@@ -72,6 +72,7 @@ namespace LigthStreet.WebApi
             services.AddSingleton(mapper);
 
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IImageHandlerService, ImageHandlerService>();
             services.AddScoped<DbContext, LightStreetContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPointRepository, PointRepository>();

@@ -181,15 +181,6 @@ app {
         display: block;
     }
 }
-
-#savebtn{
-    visibility:hidden;
-}
-
-#editbtn{
-    visibility:hidden;
-}
-
 .none{
     display:none;
 }
@@ -251,3 +242,13 @@ app {
                 background-color: #333333;
                 color: #ebebeb;
             }
+}
+
+#leftdemophoto{
+    cursor:pointer;
+}
+
+.demoImg{
+    width:380px;
+    height:330px;
+}
