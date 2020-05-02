@@ -1,10 +1,7 @@
 ﻿using Domain.Root;
-using Domain.Root.Interrfaces;
 using Infrastructure.Repositories;
+using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure

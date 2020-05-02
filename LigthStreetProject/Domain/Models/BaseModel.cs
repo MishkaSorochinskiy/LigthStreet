@@ -7,7 +7,6 @@ namespace Domain.Models
 {
     public class BaseModel
     {
-        [Key]
         [Required]
         public int Id { get; set; }
     }
