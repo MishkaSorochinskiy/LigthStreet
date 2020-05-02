@@ -212,3 +212,42 @@ app {
 .alert{
     display:none;
 }
+
+.bg-light {
+    background-color: #ebebeb !important;
+}
+
+    .bg-light .oi {
+        width: 2rem;
+        font-size: 1.1rem;
+        vertical-align: text-top;
+        top: -2px;
+    }
+
+    .bg-light .nav-item {
+        font-size: 0.9rem;
+    }
+
+        .bg-light .nav-item a {
+            color: #333333;
+            border-radius: 4px;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            line-height: 3rem;
+        }
+
+            .bg-light .nav-item a.active {
+                background-color: #ebebeb;
+                color: #333333;
+            }
+
+            .bg-light .nav-item a:hover {
+                background-color: #333333;
+                color: white;
+            }
+
+            .bg-light .nav-item a.active {
+                background-color: #333333;
+                color: #ebebeb;
+            }

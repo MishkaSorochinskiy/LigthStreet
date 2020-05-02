@@ -10,6 +10,7 @@ namespace LightStreet.Mappers
     {
         public WebApiMapperProfile()
         {
+            CreateMap<PendingUser, ViewPendingUserModel>();
             #region API => Entity
 
             CreateMap<SingUpPendingUserModel, PendingUser>()

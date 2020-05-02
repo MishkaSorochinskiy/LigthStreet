@@ -12,6 +12,8 @@ namespace Infrastructure.Repositories.Interfaces
     {
         Task<PendingUser> RegisterAsync(PendingUser pendingUser, string password);
 
+        Task<IEnumerable<PendingUser>> GetPagesAsync(int count, int page, string searchQuery);
+
         Task<bool> UsernameExists(string username);
 
         Task<bool> EmailExists(string email);
