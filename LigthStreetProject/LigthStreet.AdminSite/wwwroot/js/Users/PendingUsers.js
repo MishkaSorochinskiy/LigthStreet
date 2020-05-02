@@ -71,7 +71,7 @@
                     type: "Post",
                     contentType: "application/json",
                     data: JSON.stringify(data),
-                    url: "/api/UserRedirected/pending/status",
+                    url: "https://localhost:5001/api/user/pending/status",
                     error: function (error) {
                         dangerAlert(error.responseText);
                     },

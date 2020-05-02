@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Domain.Enums;
 using Domain.Models;
 using Domain.Root;
 using Infrastructure.Models;
+using Infrastructure.Models.ManyToMany;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +19,54 @@ namespace Infrastructure.Repositories
     {
         private readonly IMapper _mapper;
         private readonly UserManager<PendingUserEntity> _userManager;
+        private readonly IUserRepository _userRepository;
 
         public PendingUserRepository(DbContext databaseContext,
             IMapper mapper,
-            UserManager<PendingUserEntity> userManager)
+            UserManager<PendingUserEntity> userManager,
+            IUserRepository userRepository)
             :base(databaseContext)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _userRepository = userRepository;
+        }
+
+        public async Task<User> ApproveUserAndSetTagsAsync(PendingUser pendingUser, UserStatusType userStatusType, List<string> tags, int currentUserId)
+        {
+            var userToRegistration = _mapper.Map<User>(pendingUser);
+            userToRegistration.Status = userStatusType;
+            userToRegistration.ModifiedById = currentUserId;
+            var user = await _userRepository.RegisterByPasswordHashAsync(userToRegistration, pendingUser.PasswordHash);
+            await DeleteAsync(user);
+            if (tags != null)
+            {
+                foreach (var tagName in tags)
+                {
+                    var tagEntity = await databaseContext.Set<TagEntity>().FirstOrDefaultAsync(x => x.Name == tagName) ?? new TagEntity
+                    {
+                        Name = tagName.ToUpper(),
+                        UserTags = new List<UserTagEntity>(),
+                        ModifiedAt = DateTimeOffset.Now
+                    };
+
+                    if (!tagEntity.UserTags.Exists(s => s.UserId == user.Id))
+                    {
+                        tagEntity.UserTags.Add(new UserTagEntity() { UserId = user.Id });
+                    }
+                    if (tagEntity.Id == 0) { databaseContext.Set<TagEntity>().Add(tagEntity); }
+
+                    await databaseContext.SaveChangesAsync();
+                }
+            }
+            return user;
+        }
+
+        private async Task DeleteAsync(User user)
+        {
+            var userForDelete = await databaseContext.Set<PendingUser>().Where(x=>x.Id == user.Id).SingleOrDefaultAsync();
+            databaseContext.Set<PendingUser>().Remove(userForDelete);
+            await databaseContext.SaveChangesAsync();
         }
 
         public async Task<bool> EmailExists(string email)
