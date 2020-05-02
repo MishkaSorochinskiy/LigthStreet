@@ -4,7 +4,6 @@ using Infrastructure.Services.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
