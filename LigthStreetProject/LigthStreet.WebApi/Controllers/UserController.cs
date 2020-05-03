@@ -8,8 +8,10 @@ using Domain.Enums;
 using Domain.Models;
 using Infrastructure;
 using Infrastructure.Models;
+using Infrastructure.Models.Enums;
 using LightStreet.WebAPI.Models.Common;
 using LightStreet.WebAPI.Models.PendingUser;
+using LightStreet.WebAPI.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -64,6 +66,17 @@ namespace LigthStreet.WebApi.Controllers
                 return Ok();
             }
             throw new Exception("User not found");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("approved")]
+        public async Task<IActionResult> GetApprovedAgentPageAsync(int count = 10, int page = 0,
+           string sEcho = null, string searchQuery = null,
+           UserStatusTypeEntity status = UserStatusTypeEntity.Active)
+        {
+            var result = await _unitOfWork.UserRepository.GetPageAsync(count, page, searchQuery, (UserStatusTypeEntity)status.GetHashCode());
+            return Ok(new ResponsePageResultModel<ViewUserModel>(_mapper.Map<List<ViewUserModel>>(result),
+                sEcho, result.Count(), result.Count()));
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Domain.Enums;
 using Domain.Models;
 using Infrastructure.Models;
+using Infrastructure.Models.Enums;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,18 @@ namespace Infrastructure.Repositories
             {
                 throw new Exception(result.Errors.Select(x => x.Description).ToString());
             }
+        }
+
+        public async Task<IEnumerable<User>> GetPageAsync(int count, int page, string searchQuery, UserStatusTypeEntity userStatusType)
+        {
+            var query = databaseContext.Set<UserEntity>().Where(x=>x.Status == userStatusType).AsQueryable();
+            if (searchQuery != null)
+            {
+                query = query.Where(x => x.UserName.ToUpper().Contains(searchQuery.ToUpper())
+                || x.LastName.ToUpper().Contains(searchQuery.ToUpper()) || x.FirstName.ToUpper().Contains(searchQuery.ToUpper()));
+            }
+            query = query.Skip(page * count).Take(count);
+            return _mapper.Map<List<User>>(await query.ToListAsync());
         }
 
         public async Task<User> RegisterByPasswordHashAsync(User user, string passwordHash)
