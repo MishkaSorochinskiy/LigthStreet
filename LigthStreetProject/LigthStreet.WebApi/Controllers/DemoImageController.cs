@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LigthStreet.WebApi.Controllers
 {
@@ -29,6 +30,15 @@ namespace LigthStreet.WebApi.Controllers
         public IActionResult GetLightPixels(IFormFile file,[FromQuery]int lightness)
         {
             var photo = _imageHandlerService.GetLightnessPixelsAsync(file,lightness);
+
+            return Ok(photo);
+        }
+
+        [HttpPost]
+        [Route("Detect")]
+        public async Task<IActionResult> GetDetected(IFormFile file)
+        {
+            var photo = await _imageHandlerService.DetectAsync(file);
 
             return Ok(photo);
         }

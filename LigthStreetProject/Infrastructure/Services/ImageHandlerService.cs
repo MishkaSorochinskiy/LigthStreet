@@ -1,11 +1,18 @@
 ﻿using Infrastructure.Helpers;
 using Infrastructure.Services.Interfaces;
 using LightStreet.Models.ImageModel;
+using LightStreet.Models.PredictionModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Models;
+using Microsoft.Extensions.Configuration;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 
@@ -14,10 +21,13 @@ namespace Infrastructure.Services
     public class ImageHandlerService : IImageHandlerService
     {
         private readonly IImageService _imageService;
+        private readonly IConfiguration _config;
 
-        public ImageHandlerService(IImageService imageService)
+        public ImageHandlerService(IImageService imageService, IConfiguration config)
         {
             _imageService = imageService;
+
+            _config = config;
         }
 
         public string GetLightnessPixelsAsync(IFormFile file,int lightness)
@@ -146,6 +156,65 @@ namespace Infrastructure.Services
                 }
             }
             return list;
+        }
+
+        public async Task<string> DetectAsync(IFormFile file)
+        {
+            var predictionSection = _config.GetSection("PredictionApi");
+
+            var client = new CustomVisionPredictionClient
+            {
+                ApiKey = predictionSection["key"],
+                Endpoint = predictionSection["endpoint"]
+            };
+
+            var result = await client.DetectImageAsync(Guid.Parse(predictionSection["projectid"]),
+                predictionSection["iteration"], file.OpenReadStream());
+
+            return DrawRectangles(file,result);
+        }
+
+        public string DrawRectangles(IFormFile file, ImagePrediction predictionResult)
+        {
+            SKBitmap bitmap = SKBitmap.Decode(file.OpenReadStream());
+
+            SKCanvas canvas = new SKCanvas(bitmap);
+
+            SKPaint paint = new SKPaint
+            {
+                IsAntialias = true,
+                Color = new SKColor(220, 38, 38),
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 3
+            };
+
+
+            foreach (var prediction in predictionResult.Predictions)
+            {
+                if (prediction.Probability > 0.2)
+                {
+                    var x = prediction.BoundingBox.Left * bitmap.Width;
+                    var y = prediction.BoundingBox.Top * bitmap.Height;
+
+                    var width = prediction.BoundingBox.Width * bitmap.Width;
+                    var height = prediction.BoundingBox.Height * bitmap.Height;
+
+                    canvas.DrawRect((float)x, (float)y, (float)width, (float)height, paint);
+                }
+            }
+
+            var image = SKImage.FromBitmap(bitmap);
+
+            var imageStream = image.Encode().AsStream();
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                imageStream.CopyTo(ms);
+
+                var bytesArray = ms.ToArray();
+
+                return Convert.ToBase64String(bytesArray);
+            }
         }
     }
 }

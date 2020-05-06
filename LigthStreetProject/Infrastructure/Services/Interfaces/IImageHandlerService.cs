@@ -12,5 +12,7 @@ namespace Infrastructure.Services.Interfaces
         string SortPixelsAsync(IFormFile file);
 
         string GetLightnessPixelsAsync(IFormFile file, int lightness);
+
+        Task<string> DetectAsync(IFormFile file);
     }
 }
