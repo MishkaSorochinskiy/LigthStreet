@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure.Helpers
 {
-   
+
     public struct Pixel : IComparable<Pixel>
     {
         public byte Green { get; set; }
-
         public byte Red { get; set; }
-
         public byte Blue { get; set; }
 
         public double Luminence { get; set; }
