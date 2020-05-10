@@ -28,7 +28,15 @@
                 { "mData": "createdByUserName" },
                 { "mData": "firstName" },
                 { "mData": "lastName" },
-                { "mData": "roleName" },
+                {
+                    "mData": "roleName",
+                    "render": function (roleName) {
+                        if (roleName == "GrafanaUser") {
+                            return "Employee";
+                        }
+                        return roleName;
+                    }
+                },
                 {
                     "mData": "tags",
                     "render": function (tags, type, row) {

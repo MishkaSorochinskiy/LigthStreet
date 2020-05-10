@@ -24,7 +24,7 @@
                 {
                     "mData": null,
                     "render": function (tag, type, row) {
-                        return '<select class="form-control" id="selected\'' + row.id + '\'" style="width:auto;"><option selected disabled value="-1">Choose role</option><option value="1">Admin</option><option value="2">LogViewer</option></select>'
+                        return '<select class="form-control" id="selected\'' + row.id + '\'" style="width:auto;"><option selected disabled value="-1">Choose role</option><option value="1">Admin</option><option value="2">Employee</option></select>'
                     }
                 },
                 {

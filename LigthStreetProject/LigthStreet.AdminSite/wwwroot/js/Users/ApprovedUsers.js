@@ -40,10 +40,10 @@
                                 a += '<option value="1">Admin</option>';
                             }
                             if (row.roleId == 2) {
-                                a += '<option selected value = "2">LogViewer</option ></select> ';
+                                a += '<option selected value = "2">Employee</option ></select> ';
                             }
                             else {
-                                a += '<option value = "2">Grafana</option ></select > ';
+                                a += '<option value = "2">Employee</option ></select > ';
                             }
                             return a;
                         }
