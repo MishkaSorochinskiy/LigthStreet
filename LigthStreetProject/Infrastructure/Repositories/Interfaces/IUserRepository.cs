@@ -16,6 +16,10 @@ namespace Infrastructure.Repositories.Interfaces
 
         Task ChangeUserRoleAsync(int userId, int roleId);
 
+        Task<bool> UserExists(int userId);
+
         Task<IEnumerable<User>> GetPageAsync(int count, int page, string searchQuery, UserStatusTypeEntity userStatusType);
+
+        Task ChangeStatusUserAsync(int userId, UserStatusType status);
     }
 }

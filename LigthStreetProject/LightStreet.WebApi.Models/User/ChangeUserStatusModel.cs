@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace IntegratedBiometrics.WebAPI.Models.User
+namespace LightStreet.WebApi.Models.User
 {
     public class ChangeUserStatusModel
     {

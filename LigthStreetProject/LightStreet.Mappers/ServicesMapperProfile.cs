@@ -24,6 +24,7 @@ namespace LightStreet.Mappers
             CreateMap<Role, RoleEntity>();
             CreateMap<RolePermission, RolePermissionEntity>();
             CreateMap<Permission, PermissionEntity>();
+            CreateMap<UserStatusType, UserStatusTypeEntity>();
 
             #endregion Domain => Entity
 

@@ -52,8 +52,10 @@ namespace LigthStreet.WebApi.Identity.Validators
             {
                 var user = await _userManager.FindByIdAsync(sub);
                 context.IsActive = user != null;
-                context.IsActive = !user.IsDeleted;
-                context.IsActive = user.Status == UserStatusTypeEntity.Active;
+                if ( user.IsDeleted || user.Status != UserStatusTypeEntity.Active)
+                {
+                    context.IsActive = false;
+                }
             }
         }
     }

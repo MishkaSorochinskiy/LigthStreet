@@ -1,4 +1,4 @@
-﻿namespace LightStreet.WebAPI.Models.User
+﻿namespace LightStreet.WebApi.Models.User
 {
     public class ChangeUserRoleModel
     {

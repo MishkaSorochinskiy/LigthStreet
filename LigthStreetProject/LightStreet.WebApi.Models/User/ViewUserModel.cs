@@ -1,9 +1,9 @@
 ﻿using Domain.Enums;
-using LightStreet.WebAPI.Models.Tag;
+using LightStreet.WebApi.Models.Tag;
 using System;
 using System.Collections.Generic;
 
-namespace LightStreet.WebAPI.Models.User
+namespace LightStreet.WebApi.Models.User
 {
     public class ViewUserModel
     {

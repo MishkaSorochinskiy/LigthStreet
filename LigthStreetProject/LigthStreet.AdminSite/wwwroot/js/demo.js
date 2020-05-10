@@ -37,15 +37,42 @@ function calcPhoto() {
                     contentType: false,
                     type: "POST",
                     success: function (data) {
+                        document.getElementById("calculatedPhoto").src = `data:image/jpeg;base64,${data}`;
+                    }
+                });
+        }
+        else if (value == 2) {
+            $.ajax(
+                {
+                    url: `${url}DemoImage/sortpixels`,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (data) {
+                        document.getElementById("calculatedPhoto").src = `data:image/jpeg;base64,${data}`;
+                    }
+                });
+        }
+        else if (value == 3) {
+            $.ajax(
+                {
+                    url: `${url}DemoImage/Detect`,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (data) {
                         console.log(data);
                         document.getElementById("calculatedPhoto").src = `data:image/jpeg;base64,${data}`;
                     }
                 });
         }
         else {
+            let lightness = document.getElementById("sliderValue").value;
             $.ajax(
                 {
-                    url: `${url}DemoImage/sortpixels`,
+                    url: `${url}DemoImage/Detect?lightness=${lightness}`,
                     data: formData,
                     processData: false,
                     contentType: false,

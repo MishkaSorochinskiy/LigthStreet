@@ -1,4 +1,4 @@
-﻿namespace LightStreet.WebAPI.Models.Tag
+﻿namespace LightStreet.WebApi.Models.Tag
 {
     public class ViewTagModel
     {

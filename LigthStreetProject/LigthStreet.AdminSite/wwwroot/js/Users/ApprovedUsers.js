@@ -94,7 +94,7 @@
             type: "Post",
             contentType: "application/json",
             data: JSON.stringify(data),
-            url: "/api/UserRedirected/changerole",
+            url: "https://localhost:5001/api/user/changerole",
             error: function (error) {
                 dangerAlert(error.responseText);
             },
@@ -125,7 +125,7 @@
             type: "Post",
             contentType: "application/json",
             data: JSON.stringify(data),
-            url: "/api/UserRedirected/tag",
+            url: "https://localhost:5001/api/user/tag",
             error: function (error) {
                 dangerAlert(error.responseText);
             },
@@ -230,7 +230,7 @@
                 type: "Post",
                 contentType: "application/json",
                 data: JSON.stringify(data),
-                url: "/api/UserRedirected/approved/status",
+                url: "https://localhost:5001/api/user/approved/status",
                 error: function (error) {
                     dangerAlert(error.responseText);
                 },
@@ -248,7 +248,7 @@
     unregister: function (userId, tableId) {
         $.ajax({
             type: "Get",
-            url: "/api/UserRedirected/approved/unAuthorize?userId=" + userId,
+            url: "https://localhost:5001/api/user/approved/unAuthorize?userId=" + userId,
             error: function (error) {
                 dangerAlert(error.responseText);
             },

@@ -28,6 +28,14 @@ namespace Infrastructure.Repositories
             _userManager = userManager;
         }
 
+        public async Task ChangeStatusUserAsync(int userId, UserStatusType status)
+        {
+            var userStatus = _mapper.Map<UserStatusTypeEntity>(status);
+            var userForUpdate = await databaseContext.Set<UserEntity>().Where(x => x.Id == userId).SingleOrDefaultAsync();
+            userForUpdate.Status = userStatus;
+            await databaseContext.SaveChangesAsync();
+        }
+
         public async Task ChangeUserRoleAsync(int userId, int roleId)
         {
             var userEntity = await databaseContext.Set<UserEntity>().FirstOrDefaultAsync(x => x.Id == userId);
@@ -42,7 +50,7 @@ namespace Infrastructure.Repositories
             {
                 throw new Exception(deleteAllUserRolesResult.Errors.Select(x => x.Description).ToString());
             }
-
+           
             var result = await _userManager.AddToRoleAsync(userEntity, roleEntity.Name);
             if (!result.Succeeded)
             {
@@ -52,7 +60,7 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetPageAsync(int count, int page, string searchQuery, UserStatusTypeEntity userStatusType)
         {
-            var query = databaseContext.Set<UserEntity>().Where(x=>x.Status == userStatusType).AsQueryable();
+            var query = databaseContext.Set<UserEntity>().Where(x=>x.Status == userStatusType && x.IsDeleted == false).AsQueryable();
             if (searchQuery != null)
             {
                 query = query.Where(x => x.UserName.ToUpper().Contains(searchQuery.ToUpper())
@@ -74,6 +82,11 @@ namespace Infrastructure.Repositories
                 return _mapper.Map<User>(entityUser);
             }
             throw new Exception("Cannot register user");
+        }
+
+        public async Task<bool> UserExists(int userId)
+        {
+            return await databaseContext.Set<UserEntity>().AsNoTracking().AnyAsync(x => x.Id == userId);
         }
     }
 }

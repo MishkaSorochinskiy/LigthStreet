@@ -1,7 +1,7 @@
 ﻿using Domain.Enums;
 using System.Collections.Generic;
 
-namespace LightStreet.WebAPI.Models.PendingUser
+namespace LightStreet.WebApi.Models.PendingUser
 {
     public class ChangePendingUserStatusModel
     {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using LightStreet.WebAPI.Models.PendingUser;
-using LightStreet.WebAPI.Models.Tag;
-using LightStreet.WebAPI.Models.User;
+using LightStreet.WebApi.Models.PendingUser;
+using LightStreet.WebApi.Models.Tag;
+using LightStreet.WebApi.Models.User;
 using System;
 using System.Linq;
 

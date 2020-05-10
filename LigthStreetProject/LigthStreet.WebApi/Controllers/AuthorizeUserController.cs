@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Models;
 using Infrastructure;
-using LightStreet.WebAPI.Models.PendingUser;
+using LightStreet.WebApi.Models.PendingUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

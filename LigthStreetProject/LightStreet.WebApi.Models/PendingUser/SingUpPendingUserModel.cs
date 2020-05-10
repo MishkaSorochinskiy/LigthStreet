@@ -1,4 +1,4 @@
-﻿namespace LightStreet.WebAPI.Models.PendingUser
+﻿namespace LightStreet.WebApi.Models.PendingUser
 {
     public class SingUpPendingUserModel
     {

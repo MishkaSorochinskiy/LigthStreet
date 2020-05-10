@@ -9,6 +9,7 @@ namespace Infrastructure
         IPendingUserRepository PendingUserRepository { get; }
         IPointRepository PointRepository { get; }
         IUserRepository UserRepository { get; }
+        ITagRepository TagRepository { get; }
         Task Commit();
     }
 }

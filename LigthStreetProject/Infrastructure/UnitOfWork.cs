@@ -15,15 +15,16 @@ namespace Infrastructure
 
         private IPendingUserRepository pendingUserRepository;
 
-        private readonly IMapper _mapper;
+        private ITagRepository tagRepository;
 
         private IUserRepository userRepository;
+
+        private readonly IMapper _mapper;
 
         private readonly UserManager<PendingUserEntity> _pendingUserManager;
 
         private readonly UserManager<UserEntity> _userManager;
 
-        private readonly IUserRepository _userRepository;
 
         public IPointRepository PointRepository
         {
@@ -55,23 +56,32 @@ namespace Infrastructure
             {
                 if (pendingUserRepository == null)
                 {
-                    pendingUserRepository = new PendingUserRepository(DatabaseContext, _mapper, _pendingUserManager, _userRepository);
+                    pendingUserRepository = new PendingUserRepository(DatabaseContext, _mapper, _pendingUserManager, this.UserRepository);
                 }
                 return pendingUserRepository;
             }
         }
         public DbContext DatabaseContext { get; private set; }
 
-        public UnitOfWork(DbContext dbContext, IMapper mapper, 
+        public ITagRepository TagRepository
+        {
+            get
+            {
+                if (pendingUserRepository == null)
+                {
+                    tagRepository = new TagRepository(DatabaseContext, _mapper);
+                }
+                return tagRepository;
+            }
+        }
+        public UnitOfWork(LightStreetContext dbContext, IMapper mapper, 
             UserManager<PendingUserEntity> pendingUserManager,
-            UserManager<UserEntity> userManager,
-            IUserRepository userRepository)
+            UserManager<UserEntity> userManager)
         {
             DatabaseContext = dbContext;
             _mapper = mapper;
             _pendingUserManager = pendingUserManager;
             _userManager = userManager;
-            _userRepository = userRepository;
         }
 
         public Task Commit()

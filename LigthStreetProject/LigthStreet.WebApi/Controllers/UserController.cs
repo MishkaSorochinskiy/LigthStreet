@@ -7,14 +7,14 @@ using AutoMapper;
 using Domain.Enums;
 using Domain.Models;
 using Infrastructure;
-using Infrastructure.Models;
 using Infrastructure.Models.Enums;
-using LightStreet.WebAPI.Models.Common;
-using LightStreet.WebAPI.Models.PendingUser;
-using LightStreet.WebAPI.Models.User;
+using Infrastructure.Repositories.Interfaces;
+using LightStreet.WebApi.Models.Common;
+using LightStreet.WebApi.Models.PendingUser;
+using LightStreet.WebApi.Models.User;
+using LightStreet.WebApi.Models.UserTags;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LigthStreet.WebApi.Controllers
@@ -52,12 +52,7 @@ namespace LigthStreet.WebApi.Controllers
             var pendingUser = await _unitOfWork.PendingUserRepository.FindByIdAsync(model.UserId);
             if (pendingUser != null)
             {
-                var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
                 int currentUserId = 1;
-                if (claim != null)
-                {
-                   currentUserId = int.Parse(claim.Value);
-                }
                 var approvedUser = await _unitOfWork.PendingUserRepository.ApproveUserAndSetTagsAsync(_mapper.Map<PendingUser>(pendingUser), model.Status, model.Tags, currentUserId);
                 if (model.RoleId != 0)
                 {
@@ -77,6 +72,64 @@ namespace LigthStreet.WebApi.Controllers
             var result = await _unitOfWork.UserRepository.GetPageAsync(count, page, searchQuery, (UserStatusTypeEntity)status.GetHashCode());
             return Ok(new ResponsePageResultModel<ViewUserModel>(_mapper.Map<List<ViewUserModel>>(result),
                 sEcho, result.Count(), result.Count()));
+        }
+
+        [HttpPost("approved/status")]
+        public async Task<IActionResult> ChangeAgentStatus([FromBody] ChangeUserStatusModel model)
+        {
+            if (await _unitOfWork.UserRepository.UserExists(model.UserId))
+            {
+                await _unitOfWork.UserRepository.ChangeStatusUserAsync(model.UserId, model.Status);
+                return Ok();
+            }
+            throw new Exception("Agent not found");
+        }
+
+        [HttpGet("pending/unAuthorize")]
+        public async Task<IActionResult> UnAuthorizePendingAsync(int userId)
+        {
+            var pendingUserForDelete = await _unitOfWork.PendingUserRepository.FindByIdAsync(userId);
+            _unitOfWork.PendingUserRepository.Delete(pendingUserForDelete);
+            await _unitOfWork.Commit();
+            return Ok();
+        }
+
+        [HttpGet("approved/unAuthorize")]
+        public async Task<IActionResult> UnAuthorizeAsync(int userId)
+        {
+            var userForDelete = await _unitOfWork.UserRepository.FindByIdAsync(userId);
+            userForDelete.IsDeleted = true;
+            await _unitOfWork.Commit();
+            return Ok();
+        }
+
+        [HttpPost("changerole")]
+        public async Task<IActionResult> ChangeRoleAsync(ChangeUserRoleModel model)
+        {
+            await _unitOfWork.UserRepository.ChangeUserRoleAsync(model.UserId, model.RoleId);
+            return Ok();
+        }
+
+        [HttpPost("tag")]
+        public async Task<IActionResult> AddTagAsync([FromBody] ChangeTagsUserModel model)
+        {
+            if (model.AddedTagList != null)
+            {
+                foreach (var userTagBindingModel in model.AddedTagList)
+                {
+                    await _unitOfWork.TagRepository.AddUsersTagAsync(userTagBindingModel.Name, userTagBindingModel.UserIds);
+                }
+            }
+
+            if (model.DeletedTagList != null)
+            {
+                foreach (var deleteUserTagModel in model.DeletedTagList)
+                {
+                    await _unitOfWork.TagRepository.DeleteUserTagsAsync(deleteUserTagModel.UserId, deleteUserTagModel.TagIds);
+                }
+            }
+
+            return Ok();
         }
     }
 }

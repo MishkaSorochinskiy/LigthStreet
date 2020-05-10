@@ -17,3 +17,10 @@ function clearArrays() {
     approvedTags = [];
     deletedTags = [];
 }
+
+function showSaveButton() {
+    if (isVisible === false) {
+        document.getElementById("stickySave").style.display = "block";
+        isVisible = true
+    }
+}

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LightStreet.WebAPI.Models.Common
+namespace LightStreet.WebApi.Models.Common
 {
     /// <summary>
     /// Response model for JQuery DataTable plugin.

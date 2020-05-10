@@ -97,7 +97,7 @@
     unregister: function (userId) {
         $.ajax({
             type: "Get",
-            url: "/api/UserRedirected/pending/unAuthorize?userId=" + userId,
+            url: "https://localhost:5001/api/user/pending/unAuthorize?userId=" + userId,
             error: function (error) {
                 dangerAlert(error.responseText);
             },

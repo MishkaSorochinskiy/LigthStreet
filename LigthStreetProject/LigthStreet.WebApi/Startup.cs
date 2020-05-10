@@ -73,12 +73,12 @@ namespace LigthStreet.WebApi
 
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IImageHandlerService, ImageHandlerService>();
-            services.AddScoped<DbContext, LightStreetContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPointRepository, PointRepository>();
-            services.AddScoped<IPendingUserRepository, PendingUserRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddTransient<DbContext, LightStreetContext>();
+            services.AddTransient<IPointRepository, PointRepository>();
+            services.AddTransient<IPendingUserRepository, PendingUserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
             services.AddIdentityConfiguration();
 
             services.AddIdentityServerThirdPartyValidationConfiguration();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LightStreet.WebApi.Models.Point
+﻿namespace LightStreet.WebApi.Models.Point
 {
     public class AddPoint
     {

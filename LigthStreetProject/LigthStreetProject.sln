@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LigthStreet.Tests", "LigthStreet.Tests\LigthStreet.Tests.csproj", "{BD257D16-84B2-4670-B301-9F1CAC1BC930}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LigthStreet.AdminSite", "LigthStreet.AdminSite\LigthStreet.AdminSite.csproj", "{8CD0E711-0599-4F90-8DEC-AB15B75E327D}"
@@ -19,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStreet.Mappers", "Ligh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStreet.Utilities", "LightStreet.Utilities\LightStreet.Utilities.csproj", "{C3170925-DDBF-4881-819F-04AC56C14E7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightStreet.WebApi.Models", "LightStreet.WebApi.Models\LightStreet.WebApi.Models.csproj", "{6349E795-7B97-4C38-9305-1310F93E7C2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStreet.WebApi.Models", "LightStreet.WebApi.Models\LightStreet.WebApi.Models.csproj", "{6349E795-7B97-4C38-9305-1310F93E7C2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +37,6 @@ Global
 		{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD257D16-84B2-4670-B301-9F1CAC1BC930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD257D16-84B2-4670-B301-9F1CAC1BC930}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD257D16-84B2-4670-B301-9F1CAC1BC930}.Release|Any CPU.ActiveCfg = Release|Any CPU

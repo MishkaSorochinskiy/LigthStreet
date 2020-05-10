@@ -64,7 +64,7 @@
             type: "Post",
             contentType: "application/json",
             data: JSON.stringify(data),
-            url: "/api/UserRedirected/tag",
+            url: "https://localhost:5001/api/user/tag",
             error: function (error) {
                 dangerAlert(error.responseText);
             },
