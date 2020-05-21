@@ -8,7 +8,7 @@ namespace LigthStreet.AdminSite.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<RegisterResult> Register(RegisterModel registerModel);
+        Task<ActionResult> Register(RegisterModel registerModel);
         Task<LoginResult> Login(LoginModel loginModel);
     }
 }

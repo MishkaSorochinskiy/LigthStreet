@@ -23,7 +23,8 @@ namespace Infrastructure.Models
         public virtual List<UserTagEntity> UserTags { get; set; }
         public virtual List<UserEntity> CreatedUsers { get; set; }
         public virtual List<UserRoleEntity> UserRoles { get; set; }
-
+        public virtual List<ReviewEntity> Reviews { get; set; }
+        public virtual List<ReviewEntity> CreatedReviews { get; set; }
         #region overrides
         public override string NormalizedUserName { get; set; }
         

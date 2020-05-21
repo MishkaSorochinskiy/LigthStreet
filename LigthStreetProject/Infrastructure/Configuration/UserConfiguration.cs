@@ -32,6 +32,16 @@ namespace Infrastructure.Configuration
                 .WithOne(ur => ur.User)
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
+
+            builder.HasMany(u => u.Reviews)
+                .WithOne(ur => ur.ApplyOn)
+                .HasForeignKey(ur => ur.ApplyOnId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(u => u.CreatedReviews)
+               .WithOne(ur => ur.CreatedBy)
+               .HasForeignKey(ur => ur.CreatedById)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

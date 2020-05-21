@@ -4,7 +4,6 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,6 +47,7 @@
     <script src="~/js/Users/PendingUsers.js"></script>
     <script src="~/js/Users/ApprovedUsers.js"></script>
     <script src="~/js/Users/BlockedUsers.js"></script>
+    <script src="~/js/Users/TaskList.js"></script>
     <script>
         function showPassword() {
             if (document.getElementById("eyePassword").style.color !== "lawngreen") {
@@ -94,6 +94,16 @@
 
         function enableRegister() {
             document.getElementById("register-btn").removeAttribute("disabled");
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+            document.getElementById(modalId).style.opacity = 1;
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+            document.getElementById(modalId).style.opacity = 0;
         }
     </script>
 </body>

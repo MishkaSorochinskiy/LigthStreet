@@ -1,14 +1,10 @@
-﻿using Domain.Models;
-using Infrastructure.Configuration;
+﻿using Infrastructure.Configuration;
 using Infrastructure.Configuration.ManyToMany;
 using Infrastructure.Models;
 using Infrastructure.Models.ManyToMany;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure
 {
@@ -29,6 +25,7 @@ namespace Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //optionsBuilder.UseSqlServer("Server=DESKTOP-7I4K4O1;Database=LightStreetContext;Trusted_Connection=True;");
             optionsBuilder
                 .UseLazyLoadingProxies();
         }
@@ -51,6 +48,7 @@ namespace Infrastructure
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new TagConfiguration());
             modelBuilder.ApplyConfiguration(new PointConfiguration());
+            modelBuilder.ApplyConfiguration(new ReviewConfiguration());
 
         }
 
@@ -68,9 +66,15 @@ namespace Infrastructure
         public DbSet<TagEntity> Tags { get; set; }
 
         /// <summary>
-        /// Collection of all AgentTags.
+        /// Collection of all Points.
         /// </summary>
-        public DbSet<PointEntity> AgentTags { get; set; }
+        public DbSet<PointEntity> Points { get; set; }
+
+        /// <summary>
+        /// Collection of all Reviews.
+        /// </summary>
+        public DbSet<ReviewEntity> Reviews { get; set; }
+
 
         /// <summary>
         /// Collection of all UserTags.

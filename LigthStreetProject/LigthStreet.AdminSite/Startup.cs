@@ -58,6 +58,7 @@ namespace LigthStreet.AdminSite
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

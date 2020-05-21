@@ -58,6 +58,11 @@ namespace Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<User>> GetAllActiveUsers()
+        {
+            return _mapper.Map<List<User>>(await databaseContext.Set<UserEntity>().Where(x => x.Status == UserStatusTypeEntity.Active && x.IsDeleted == false).ToListAsync());
+        }
+
         public async Task<IEnumerable<User>> GetPageAsync(int count, int page, string searchQuery, UserStatusTypeEntity userStatusType)
         {
             var query = databaseContext.Set<UserEntity>().Where(x=>x.Status == userStatusType && x.IsDeleted == false).AsQueryable();

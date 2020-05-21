@@ -22,5 +22,7 @@ namespace Domain.Models
         public bool IsDeleted { get; set; }
         public List<UserTag> UserTags { get; set; }
         public List<UserRole> UserRoles { get; set; }
+        public List<Review> Reviews { get; set; }
+        public List<Review> CreatedReviews { get; set; }
     }
 }

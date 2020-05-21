@@ -17,6 +17,8 @@ namespace Infrastructure
 
         private ITagRepository tagRepository;
 
+        private IReviewRepository reviewRepository;
+
         private IUserRepository userRepository;
 
         private readonly IMapper _mapper;
@@ -35,6 +37,18 @@ namespace Infrastructure
                     pointRepository = new PointRepository(DatabaseContext);
                 }
                 return pointRepository;
+            }
+        }
+
+        public IReviewRepository ReviewRepository
+        {
+            get
+            {
+                if (reviewRepository == null)
+                {
+                    reviewRepository = new ReviewRepository(DatabaseContext, _mapper);
+                }
+                return reviewRepository;
             }
         }
 

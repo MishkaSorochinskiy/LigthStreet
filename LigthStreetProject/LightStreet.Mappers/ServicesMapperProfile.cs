@@ -16,6 +16,9 @@ namespace LightStreet.Mappers
             #region Domain => Entity
 
             CreateMap<PendingType, PendingTypeEntity>();
+            CreateMap<ReviewState, ReviewStateEntity>();
+            CreateMap<Point, PointEntity>();
+            CreateMap<Review, ReviewEntity>();
             CreateMap<Tag, TagEntity>();
             CreateMap<UserTag, UserTagEntity>();
             CreateMap<PendingUser, PendingUserEntity>();
@@ -31,6 +34,9 @@ namespace LightStreet.Mappers
             #region Entity => Domain
 
             CreateMap<PendingTypeEntity, PendingType>();
+            CreateMap<ReviewStateEntity, ReviewState>();
+            CreateMap<PointEntity, Point>();
+            CreateMap<ReviewEntity, Review>();
             CreateMap<TagEntity, Tag>();
             CreateMap<UserTagEntity, UserTag>();
             CreateMap<PendingUserEntity, PendingUser>();
@@ -39,6 +45,7 @@ namespace LightStreet.Mappers
             CreateMap<RoleEntity, Role>();
             CreateMap<RolePermissionEntity, RolePermission>();
             CreateMap<PermissionEntity, Permission>();
+            CreateMap<PointEntity, Point>();
 
             #endregion Entity => Domain
 

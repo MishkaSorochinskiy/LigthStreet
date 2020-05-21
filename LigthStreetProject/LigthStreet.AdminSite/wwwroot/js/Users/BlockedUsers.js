@@ -2,6 +2,11 @@
     bindDatatable: function () {
         clearArrays();
         table = $('#Blocked').DataTable({
+            language: {
+                searchPlaceholder: "Search records",
+                search: "",
+                lengthMenu: "_MENU_"
+            },
             responsive: true,
             "bServerSide": true,
             "sAjaxSource": "https://localhost:5001/api/user/approved?count=",

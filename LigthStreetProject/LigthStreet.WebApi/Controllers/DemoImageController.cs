@@ -21,7 +21,6 @@ namespace LigthStreet.WebApi.Controllers
         public IActionResult SortPixels(IFormFile file)
         {
             var photo = _imageHandlerService.SortPixelsAsync(file);
-
             return Ok(photo);
         }
 
@@ -30,7 +29,6 @@ namespace LigthStreet.WebApi.Controllers
         public IActionResult GetLightPixels(IFormFile file,[FromQuery]int lightness)
         {
             var photo = _imageHandlerService.GetLightnessPixelsAsync(file,lightness);
-
             return Ok(photo);
         }
 
@@ -39,7 +37,6 @@ namespace LigthStreet.WebApi.Controllers
         public async Task<IActionResult> GetDetected(IFormFile file, [FromQuery]int lightness = -1)
         {
             var photo = await _imageHandlerService.DetectAsync(file, lightness);
-
             return Ok(photo);
         }
     }

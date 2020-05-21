@@ -13,4 +13,8 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LightStreet.WebApi.Models\LightStreet.WebApi.Models.csproj" />
+  </ItemGroup>
+
 </Project>

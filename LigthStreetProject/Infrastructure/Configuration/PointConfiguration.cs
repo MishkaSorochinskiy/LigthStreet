@@ -19,6 +19,10 @@ namespace Infrastructure.Configuration
 
             builder.Property(e => e.Longtitude).IsRequired();
 
+            builder.HasMany(u => u.Reviews)
+               .WithOne(ur => ur.Point)
+               .HasForeignKey(ur => ur.PointId)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

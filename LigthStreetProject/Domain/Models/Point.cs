@@ -13,10 +13,10 @@ namespace Domain.Models
             Latitude = latitude;
             Longtitude = longtitude;
         }
-        [Required]
         public double Latitude { get; set; }
-
-        [Required]  
         public double Longtitude { get; set; }
+        public string Street { get; set; }
+        public List<Review> Reviews { get; set; }
+
     }
 }

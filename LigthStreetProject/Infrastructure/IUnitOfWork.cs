@@ -10,6 +10,7 @@ namespace Infrastructure
         IPointRepository PointRepository { get; }
         IUserRepository UserRepository { get; }
         ITagRepository TagRepository { get; }
+        IReviewRepository ReviewRepository { get; }
         Task Commit();
     }
 }

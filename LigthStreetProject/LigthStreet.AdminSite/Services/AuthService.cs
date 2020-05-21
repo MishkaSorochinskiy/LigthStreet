@@ -17,7 +17,7 @@ namespace LigthStreet.AdminSite.Services
 
         private const string URL = "https://localhost:5001/";
 
-        public async Task<RegisterResult> Register(RegisterModel registerModel)
+        public async Task<ActionResult> Register(RegisterModel registerModel)
         {
             using (var _httpClient = new HttpClient())
             {
@@ -33,10 +33,10 @@ namespace LigthStreet.AdminSite.Services
                 if (!response.IsSuccessStatusCode)
                 {
 
-                    return new RegisterResult() { Successfull = false, Error = response.ReasonPhrase };
+                    return new ActionResult() { Successfull = false, Error = response.ReasonPhrase };
                 }
             }
-            return new RegisterResult() { Successfull = true };
+            return new ActionResult() { Successfull = true };
         }
 
         public async Task<LoginResult> Login(LoginModel loginModel)

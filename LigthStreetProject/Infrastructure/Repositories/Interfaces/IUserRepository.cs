@@ -21,5 +21,7 @@ namespace Infrastructure.Repositories.Interfaces
         Task<IEnumerable<User>> GetPageAsync(int count, int page, string searchQuery, UserStatusTypeEntity userStatusType);
 
         Task ChangeStatusUserAsync(int userId, UserStatusType status);
+
+        Task<IEnumerable<User>> GetAllActiveUsers();
     }
 }
