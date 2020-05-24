@@ -1,15 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
+using Domain.AzureConnections;
+using Domain.AzureConnections.Interfaces;
+using Infrastructure;
+using Infrastructure.Repositories;
+using Infrastructure.Repositories.Interfaces;
+using Infrastructure.Services;
+using Infrastructure.Services.Interfaces;
+using LightStreet.Mappers;
+using LigthStreet.WebApi.Identity.IdentityConfigs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace LigthStreet.WebApi
 {
@@ -25,7 +32,63 @@ namespace LigthStreet.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore()
+                .AddAuthorization(opts =>
+                {
+                    opts.AddPolicy("AllowLogView", policy => { policy.RequireClaim("Permission", "AllowLogView"); });
+                    opts.AddPolicy("AllowAdmin", policy => { policy.RequireClaim("Permission", "AllowAdmin"); });
+                    opts.AddPolicy("AllowUserManagement", policy => { policy.RequireClaim("Permission", "AllowUserManagement"); });
+                    opts.AddPolicy("AllowAgentManagement", policy => { policy.RequireClaim("Permission", "AllowAgentManagement"); });
+                    opts.AddPolicy("AllowAgentInstall", policy => { policy.RequireClaim("Permission", "AllowAgentInstall"); });
+                    opts.AddPolicy("AllowFirmwareInstall", policy => { policy.RequireClaim("Permission", "AllowFirmwareInstall"); });
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+
+            #region Add AzureStorage dependencies
+            services.AddTransient<IAzureStorageConnection, AzureStorageConnection>();
+            #endregion
+            #region Add Entity Framework and Identity Framework 
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<LightStreetContext>(options =>
+                options.UseSqlServer(connection));
+            #endregion
+
+            services.AddControllers()
+               .AddNewtonsoftJson(options =>
+               {
+                   options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+               });
+
+            services.AddCors();
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ServicesMapperProfile());
+                mc.AddProfile(new WebApiMapperProfile());
+                mc.AddExpressionMapping();
+                mc.AllowNullCollections = true;
+            });
+
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IImageHandlerService, ImageHandlerService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<DbContext, LightStreetContext>();
+            services.AddTransient<IPointRepository, PointRepository>();
+            services.AddTransient<IPendingUserRepository, PendingUserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
+            services.AddIdentityConfiguration();
+
+            services.AddIdentityServerThirdPartyValidationConfiguration();
+
+            services.AddIdentityServerConfiguration(connection);
+            services.InitializeDatabaseForIdentitySever();
+            //services.AddTransient<IClientService, ClientService>();
+
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,16 +99,24 @@ namespace LigthStreet.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .SetIsOriginAllowed(_ => true)
+               .AllowCredentials()
+           );
+
+            app.UseIdentityServer();
+
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

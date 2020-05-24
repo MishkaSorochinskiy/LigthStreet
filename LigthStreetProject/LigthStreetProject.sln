@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LigthStreet.WebApi", "LigthStreet.WebApi\LigthStreet.WebApi.csproj", "{380ACC25-6D2A-47C7-9A55-C0E0E018F232}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LigthStreet.WebApi", "LigthStreet.WebApi\LigthStreet.WebApi.csproj", "{380ACC25-6D2A-47C7-9A55-C0E0E018F232}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{C32496F5-9C6B-4212-99DC-9CE7FB7F8972}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{C32496F5-9C6B-4212-99DC-9CE7FB7F8972}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LigthStreet.Tests", "LigthStreet.Tests\LigthStreet.Tests.csproj", "{BD257D16-84B2-4670-B301-9F1CAC1BC930}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LigthStreet.Tests", "LigthStreet.Tests\LigthStreet.Tests.csproj", "{BD257D16-84B2-4670-B301-9F1CAC1BC930}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LigthStreet.AdminSite", "LigthStreet.AdminSite\LigthStreet.AdminSite.csproj", "{8CD0E711-0599-4F90-8DEC-AB15B75E327D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LigthStreet.AdminSite", "LigthStreet.AdminSite\LigthStreet.AdminSite.csproj", "{8CD0E711-0599-4F90-8DEC-AB15B75E327D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStreet.Mappers", "LightStreet.Mappers\LightStreet.Mappers.csproj", "{BA4B8EE2-EFB6-4C8E-AC7E-F0EC0D9DF1B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStreet.Utilities", "LightStreet.Utilities\LightStreet.Utilities.csproj", "{C3170925-DDBF-4881-819F-04AC56C14E7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStreet.WebApi.Models", "LightStreet.WebApi.Models\LightStreet.WebApi.Models.csproj", "{6349E795-7B97-4C38-9305-1310F93E7C2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +37,6 @@ Global
 		{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C3D0E5E-6D0B-4B36-A23C-F28CE307D201}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7FBD335-8F5B-4E34-A201-E2D4B487FE83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD257D16-84B2-4670-B301-9F1CAC1BC930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD257D16-84B2-4670-B301-9F1CAC1BC930}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD257D16-84B2-4670-B301-9F1CAC1BC930}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +45,18 @@ Global
 		{8CD0E711-0599-4F90-8DEC-AB15B75E327D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CD0E711-0599-4F90-8DEC-AB15B75E327D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CD0E711-0599-4F90-8DEC-AB15B75E327D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA4B8EE2-EFB6-4C8E-AC7E-F0EC0D9DF1B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA4B8EE2-EFB6-4C8E-AC7E-F0EC0D9DF1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA4B8EE2-EFB6-4C8E-AC7E-F0EC0D9DF1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA4B8EE2-EFB6-4C8E-AC7E-F0EC0D9DF1B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3170925-DDBF-4881-819F-04AC56C14E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3170925-DDBF-4881-819F-04AC56C14E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3170925-DDBF-4881-819F-04AC56C14E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3170925-DDBF-4881-819F-04AC56C14E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6349E795-7B97-4C38-9305-1310F93E7C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6349E795-7B97-4C38-9305-1310F93E7C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6349E795-7B97-4C38-9305-1310F93E7C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6349E795-7B97-4C38-9305-1310F93E7C2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

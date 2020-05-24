@@ -1,0 +1,23 @@
+﻿@using System.Security.Claims;
+
+@page "/control"
+@code{
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}
+}

@@ -1,0 +1,25 @@
+﻿<div class="modal fade bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" style="background: rgba(100, 149, 237, 0.3); padding-top:30px;" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg @Class" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLongTitle">Details</h3>
+                <button type="button" class="close" data-dismiss="modal" onclick="hideModal('exampleModalLong')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-wrap:wrap;">
+                @ChildContent
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="hideModal('exampleModalLong')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public string Class { get; set; }
+}

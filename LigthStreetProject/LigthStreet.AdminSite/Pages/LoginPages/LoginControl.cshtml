@@ -1,0 +1,121 @@
+﻿@page "/login"
+@model IntegratedBiometrics.AdminSite.LoginControlModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "LoginControl";
+}
+
+<head>
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/open-iconic/font/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/login.css">
+</head>
+<app>
+    <div class="col-12">
+        <div class="limiter">
+            <div class="container-login100">
+                <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+                    <form method="post" id="form-login">
+                        <span class="login100-form-title p-b-32">
+                            Account Login
+                        </span>
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                Invalid username or password
+                                <button type="button" onclick="closeAlert()" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        }
+                        <span class="txt1 p-b-11">
+                            Username
+                        </span>
+                        <div class="form-group">
+                            <input type="text" class="form-control input100" id="EmailUser" asp-for="Login.Email" required="" aria-describedby="emailHelp" placeholder="Enter username">
+                        </div>
+                        <span class="txt1 p-b-11">
+                            Password
+                        </span>
+                        <div class="form-group">
+                            <span toggle="#password-field" id="eyePassword" onclick="showPassword()" class="oi oi-eye field-icon toggle-password" style="color: black;"></span>
+                            <input type="password" class="form-control input100" asp-for="Login.Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}" title="Must contain at least one number and special symbol, one uppercase and lowercase letter, and at least 8 or more characters" id="PasswordUser" required="" placeholder="Password">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="container-login100-form-btn form-group">
+                            <button type="submit" class="login100-form-btn" onclick="submitForm()" id="login-btn">
+                                Login
+                            </button>
+                            <a href="/register" class="register-href">
+                                Register
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</app>
+<script>
+    function showPassword() {
+        if (document.getElementById("eyePassword").style.color !== "lawngreen") {
+            document.getElementById("eyePassword").style.color = "lawngreen";
+            document.getElementById("PasswordUser").type = "text";
+        }
+        else {
+            document.getElementById("eyePassword").style.color = "black";
+            document.getElementById("PasswordUser").type = "password";
+        }
+    }
+
+    function closeAlert() {
+        document.getElementsByClassName('alert')[0].style.display = "none";
+    }
+
+    function submitForm() {
+        disableLogin();
+        document.getElementById("form-login").submit();
+    }
+
+    function disableLogin() {
+        document.getElementById("login-btn").setAttribute("disabled", "disabled");
+    }
+</script>
+
+<style>
+    body {
+        background-color: #ebebeb;
+    }
+    .login100-form-btn:disabled,
+    .login100-form-btn[disabled]{
+        border: 1px solid #999999;
+        background-color: #ced4da;
+        color: #666666;
+    }
+
+    .register-href {
+        font-family: Raleway-Bold;
+        font-size: 20px;
+        color: black;
+        line-height: 1.2;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+        min-width: 150px;
+        height: 55px;
+        background-color: white;
+        border-radius: 27px;
+        -webkit-transition: all .4s;
+        -o-transition: all .4s;
+        -moz-transition: all .4s;
+        transition: all .4s;
+        border: none;
+        margin-left: 70px;
+    }
+</style>

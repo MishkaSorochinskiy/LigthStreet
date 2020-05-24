@@ -1,0 +1,120 @@
+﻿@page "/users/blocked"
+@layout UserLayout
+@inject IJSRuntime JSRuntime
+@attribute [Authorize(Policy = "AllowUserManagement")]
+<AuthorizeView Policy="AllowUserManagement">
+    <div>
+        <div class="sticky" id="stickySave">
+            <input type="submit" @onclick="@(()=>JSRuntime.InvokeAsync<object>("blockedUsers.save"))" value="Save" class="btn btn-primary" />
+            <input type="submit" @onclick="@(()=>JSRuntime.InvokeAsync<object>("approvedUsers.cancelChanges"))" value="Cancel" class="btn btn-light" style="margin-left:10px;" />
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        </div>
+        <table class="table table-striped table-responsive-md" id="Blocked" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        BlockedAt
+                    </th>
+                    <th>
+                        BlockedBy
+                    </th>
+                    <th>
+                        FirstName
+                    </th>
+                    <th>
+                        LastName
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        Tag
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</AuthorizeView>
+    @code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeAsync<object>("blockedUsers.bindDatatable");
+        }
+    }
+    }
+
+    <style>
+        .chip {
+            margin: 1em 1em 0 0;
+            display: inline-block;
+            width: 40px;
+            height: 16px;
+            padding: 0px 4px;
+            line-height: 20px;
+            border-radius: 3px;
+            background-color: rgba(100,160,237, 0.62);
+            font-size: 7px;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 12ch;
+            text-overflow: ellipsis;
+        }
+
+            .chip:hover {
+                background-color: rgba(100,160,237, 1);
+            }
+
+        .closebtn {
+            padding-left: 15px;
+            color: #888;
+            font-weight: bold;
+            float: right;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+            .closebtn:hover {
+                color: #000;
+            }
+
+        div.sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            display: none;
+            padding: 10px;
+            font-size: 20px;
+            background-color: rgba(100, 149, 237, 0.3);
+            z-index: 5;
+            margin-bottom: 0.3em;
+        }
+
+        .table {
+            width: 100%;
+        }
+
+        .modal fade {
+            background: rgba(100, 149, 237, 0.3);
+        }
+
+        .modal-dialog {
+            margin-top: 50px;
+        }
+
+        .tag {
+            margin-left: 8px;
+        }
+    </style>

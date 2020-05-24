@@ -1,0 +1,158 @@
+﻿@page "/tasks"
+@using LightStreet.WebApi.Models.Review
+@layout AuditLayout
+@using LigthStreet.AdminSite.Services.Interfaces
+
+@inject IReviewService ReviewService
+@inject IJSRuntime JSRuntime
+
+<AuthorizeView>
+    <div>
+        <div id="btns">
+            <button type="button" class="btn btn-primary addbtn" data-toggle="modal" onclick="showModal('addAgentModal')">
+                Add Task for User
+            </button>
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        </div>
+        <div class="alert alert-warning" role="alert">
+        </div>
+        <table class="table table-striped table-responsive-md" id="Tasks" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        Subject
+                    </th>
+                    <th>
+                        Created By
+                    </th>
+                    <th>
+                        Apply On
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</AuthorizeView>
+
+<div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog" aria-labelledby="addAgentModalLabel" aria-hidden="true" style="background: rgba(100, 149, 237, 0.3);">
+    <div class="modal-dialog agentModalDialog" role="document" style="margin-top: 100px;">
+        <div class="modal-content matching-rule-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="font-weight:bold;" id="exampleModalLabel">Add task for user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hideModal('addAgentModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <EditForm Model="@task" OnSubmit="@AddTaskForUser">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="selectUser"><b>Select user</b></label>
+                        <select class="form-control" @bind="@task.ApplyOnId" id="selectUser" required="">
+                            <option value="">Select user</option>
+                            @if (list != null)
+                            {
+                                @foreach (var user in list.Users)
+                                {
+                                    <option value="@user.Id">@user.UserName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectPoint"><b>Select location</b></label>
+                        <select class="form-control" @bind="@task.PointId" id="selectPoint" required="">
+                            <option value="">Select point</option>
+                            @if (list != null)
+                            {
+                                @foreach (var point in list.Points)
+                                {
+                                    <option value="@point.Id">@point.Latitude + " " @point.Longtitude</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject"><b>Subject</b></label>
+                        <input type="text" class="form-control" id="subject" @bind="@task.Subject" placeholder="Enter subject of task" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description"><b>Description</b></label>
+                        <textarea class="form-control" @bind="@task.Description" id="description" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="hideModal('addAgentModal')">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@if (review != null)
+{
+    <BaseModal>
+        <TaskModalBody model="@review"/>
+    </BaseModal>
+}
+
+@code {
+    private ViewReviewModel review;
+    private TaskForUser task;
+    private PointsWithUsersModel list;
+    public string LoginMesssage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        task = new TaskForUser();
+        list = await ReviewService.GetAllPointsAndUsers();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var dotNetReference = DotNetObjectReference.Create(this);
+            await JSRuntime.InvokeAsync<object>("tasks.bindDatatable", dotNetReference);
+        }
+    }
+
+    private async Task AddTaskForUser()
+    {
+        var result = await ReviewService.AddReviewAsync(task);
+        if (result.Successfull)
+        {
+            await JSRuntime.InvokeVoidAsync("successAlert", "Task have been added");
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("dangerAlert", result.Error);
+        }
+        await JSRuntime.InvokeVoidAsync("hideModal", "addAgentModal");
+    }
+
+    [JSInvokable("AddText")]
+    public async Task PassObject(ViewReviewModel data)
+    {
+        review = data;
+        base.StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("showModal", "exampleModalLong");
+    }
+}
+
+<style>
+    #btns button {
+        background-color: #333333;
+        margin-bottom: 30px;
+        margin-left: 20px;
+    }
+</style>

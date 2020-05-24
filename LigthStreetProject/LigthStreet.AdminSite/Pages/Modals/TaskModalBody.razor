@@ -1,0 +1,10 @@
+﻿@using LightStreet.WebApi.Models.Review
+@inherits BaseModalBody<ViewReviewModel>
+
+<div id="oldValues" class="flex-fill">
+    <p><b>Subject: </b>@model.Subject</p>
+    <p><b>Created by: </b>@model.CreatedBy</p>
+    <p><b>Apply on: </b>@model.ApplyOn</p>
+    <p><b>Description:</b></p>
+    <textarea class="form-control" readonly>@model.Description</textarea>
+</div>

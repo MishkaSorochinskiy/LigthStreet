@@ -4,7 +4,6 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +13,7 @@
     <base href="~/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
 </head>
 <body>
     <app>
@@ -31,6 +31,80 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBN2flaovRh2XfVjhrADu7F7r-mxZSJ6iA&callback=initMap">
+    </script>
     <script src="_framework/blazor.server.js"></script>
+    <script src="~/js/classes.js"></script>
+    <script src="~/js/maps.js"></script>
+    <script src="~/js/demo.js"></script>
+    <script src="~/js/Datatables/jquery.min.js"></script>
+    <script src="~/js/moment.js"></script>
+    <script src="~/js/Datatables/jquery.dataTables.js"></script>
+    <link href="~/css/Datatable/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="~/js/Users/Common.js"></script>
+    <script src="~/js/Users/PendingUsers.js"></script>
+    <script src="~/js/Users/ApprovedUsers.js"></script>
+    <script src="~/js/Users/BlockedUsers.js"></script>
+    <script src="~/js/Users/TaskList.js"></script>
+    <script>
+        function showPassword() {
+            if (document.getElementById("eyePassword").style.color !== "lawngreen") {
+                document.getElementById("eyePassword").style.color = "lawngreen";
+                document.getElementById("PasswordUser").type = "text";
+            }
+            else {
+                document.getElementById("eyePassword").style.color = "black";
+                document.getElementById("PasswordUser").type = "password";
+            }
+        }
+
+        function successAlert(message) {
+            $('.alert-success').show();
+            document.getElementsByClassName("alert-success")[0].innerText = message;
+            setTimeout(function () { $('.alert-success').slideUp(1000); }, 2000);
+        }
+
+        function dangerAlert(message) {
+            $('.alert-danger').show();
+            document.getElementsByClassName("alert-danger")[0].innerText = message;
+            setTimeout(function () { $('.alert-danger').slideUp(1000); }, 2000);
+        }
+
+        function warningAlert(message) {
+            $('.alert-warning').show();
+            document.getElementsByClassName("alert-warning")[0].innerText = message;
+            setTimeout(function () { $('.alert-warning').slideUp(1000); }, 3000);
+        }
+
+        function registerAlert(message) {
+            $('.alert-danger').css("display", "block");
+            var textnode = document.createTextNode(message);
+            document.getElementById('alert').appendChild(textnode)
+        }
+
+        function closeAlert() {
+            $('.alert-danger').css("display", "none");
+        }
+
+        function disableRegister() {
+            document.getElementById("register-btn").setAttribute("disabled", "disabled");
+        }
+
+        function enableRegister() {
+            document.getElementById("register-btn").removeAttribute("disabled");
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+            document.getElementById(modalId).style.opacity = 1;
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+            document.getElementById(modalId).style.opacity = 0;
+        }
+    </script>
 </body>
 </html>
