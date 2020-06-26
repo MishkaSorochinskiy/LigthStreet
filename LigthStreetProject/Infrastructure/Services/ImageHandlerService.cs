@@ -142,7 +142,7 @@ namespace Infrastructure.Services
                 });
                 
                 var percents =  ((double)count / (bitmap.Width * bitmap.Height)) * 100;
-                if(percents > 25)
+                if(percents > 10)
                 {
                     list.Add(new ImageModel() { PointId = pointIds[k], IsLight = true });
                 }
